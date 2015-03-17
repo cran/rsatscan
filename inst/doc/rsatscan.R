@@ -31,28 +31,28 @@ write.geo(NYCfevergeo, td, "NYCfever")
 # SaTScan can be downloaded from www.satscan.org, free of charge
 # you will also find there fully compiled versions of this vignette with results
 
-# NYCfever = satscan(td, "NYCfever")
+## NYCfever = satscan(td, "NYCfever", sslocation="C:/Program Files (x86)/SaTScan")
 
 ## ------------------------------------------------------------------------
-# summary(NYCfever)
+## summary(NYCfever)
 
 ## ------------------------------------------------------------------------
-# summary.default(NYCfever)
+## summary.default(NYCfever)
 
 ## ------------------------------------------------------------------------
-# sp::plot(NYCfever$shapeclust)
+## sp::plot(NYCfever$shapeclust)
 
 ## ----, fig.keep="all", fig.show="hold"-----------------------------------
-# hist(unlist(NYCfever$llr), main="Monte Carlo")
+## hist(unlist(NYCfever$llr), main="Monte Carlo")
 
 # Let's draw a line for the clusters in the observed data
-# abline(v=NYCfever$col[,c("TEST_STAT")], col = "red")
+## abline(v=NYCfever$col[,c("TEST_STAT")], col = "red")
 
 ## ----, echo=FALSE, include=FALSE-----------------------------------------
 #clean up!
-file.remove(paste0(td,"NYCfever.prm"))
-file.remove(paste0(td,"NYCfever.cas"))
-file.remove(paste0(td,"NYCfever.geo"))
+file.remove(paste0(td,"/NYCfever.prm"))
+file.remove(paste0(td,"/NYCfever.cas"))
+file.remove(paste0(td,"/NYCfever.geo"))
 
 ## ------------------------------------------------------------------------
 write.cas(NMcas, td,"NM")
@@ -67,20 +67,20 @@ ss.options(list(CaseFile="NM.cas",StartDate="1973/1/1",EndDate="1991/12/31",
 ss.options(c("NonCompactnessPenalty=0", "ReportGiniClusters=n", "LogRunToHistoryFile=n"))
 
 write.ss.prm(td,"testnm")
-# testnm = satscan(td,"testnm")
+## testnm = satscan(td,"testnm", sslocation="C:/Program Files (x86)/SaTScan")
 
 ## ------------------------------------------------------------------------
-# summary(testnm)
+## summary(testnm)
 
 ## ------------------------------------------------------------------------
-# head(testnm$prm,10)
+## head(testnm$prm,10)
 
 ## ----, echo=FALSE, include=FALSE-----------------------------------------
 #clean up!
-file.remove(paste0(td,"testnm.prm"))
-file.remove(paste0(td,"NM.pop"))
-file.remove(paste0(td,"NM.cas"))
-file.remove(paste0(td,"NM.geo"))
+file.remove(paste0(td,"/testnm.prm"))
+file.remove(paste0(td,"/NM.pop"))
+file.remove(paste0(td,"/NM.cas"))
+file.remove(paste0(td,"/NM.geo"))
 
 ## ------------------------------------------------------------------------
 write.cas(NHumbersidecas, td, "NHumberside")
@@ -95,14 +95,14 @@ ss.options(list(TimeAggregationUnits = 3, NonCompactnessPenalty=0))
 ss.options(list(ReportGiniClusters="n", LogRunToHistoryFile="n"))
 
 write.ss.prm(td, "NHumberside")
-# NHumberside = satscan(td, "NHumberside")
+## NHumberside = satscan(td, "NHumberside", sslocation="C:/Program Files (x86)/SaTScan")
 
-# summary(NHumberside)
+## summary(NHumberside)
 
 ## ----, echo=FALSE, include=FALSE-----------------------------------------
 #clean up!
-file.remove(paste0(td,"NHumberside.cas"))
-file.remove(paste0(td,"NHumberside.ctl"))
-file.remove(paste0(td,"NHumberside.geo"))
-file.remove(paste0(td,"NHumberside.prm"))
+file.remove(paste0(td,"/NHumberside.cas"))
+file.remove(paste0(td,"/NHumberside.ctl"))
+file.remove(paste0(td,"/NHumberside.geo"))
+file.remove(paste0(td,"/NHumberside.prm"))
 

@@ -67,9 +67,9 @@ write.ss.prm(td, "day2")
 
 ## ----, echo=FALSE, include=FALSE-----------------------------------------
 #clean up!
-file.remove(paste0(td,"day1.prm"))
-file.remove(paste0(td,"day2.prm"))
-file.remove(paste0(td,"mybase.prm"))
-file.remove(paste0(td,"mycas.cas"))
-file.remove(paste0(td,"mygeo.geo"))
+file.remove(paste0(td,"/day1.prm"))
+file.remove(paste0(td,"/day2.prm"))
+file.remove(paste0(td,"/mybase.prm"))
+file.remove(paste0(td,"/mycas.cas"))
+file.remove(paste0(td,"/mygeo.geo"))
 

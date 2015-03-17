@@ -34,23 +34,24 @@ ss.options(list(MaxTemporalSizeInterpretation=1, MaxTemporalSize=7))
 ss.options(list(ProspectiveStartDate="2001/11/24", ReportGiniClusters="n", LogRunToHistoryFile="n"))
 ```
 
-Then, write the parameter file, the case file, and the geometry file to the OS.
+Then, write the parameter file, the case file, and the geometry file to the OS.  These case and geometry files are included in the package and distributed with SaTScan.
 
 ``` r
-write.ss.prm("c:/temp","NYCfever")
-write.cas(NYCfevercas,"C:/temp","NYCfever")
-write.geo(NYCfevergeo,"C:/temp","NYCfever")
+td = tempdir()
+write.ss.prm(td,"NYCfever")
+write.cas(NYCfevercas,td,"NYCfever")
+write.geo(NYCfevergeo,td,"NYCfever")
 ```
 
 Then run SaTScan.
 
 ``` r
-NYCfever = satscan("C:/temp","NYCfever")
+NYCfever = satscan(td,"NYCfever")
 ```
 
 The `rsatscan` package provides a `summary` method for `satscan` objects.
 
-``` r
+``` 
 summary(NYCfever)
 #> Prospective Space-Time analysis 
 #> scanning for clusters with high rates 

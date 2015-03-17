@@ -10,7 +10,7 @@
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2015-02-05" />
+<meta name="date" content="2015-03-17" />
 
 <title>rsatscan</title>
 
@@ -54,15 +54,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">rsatscan</h1>
 <h4 class="author"><em>Ken Kleinman</em></h4>
-<h4 class="date"><em>2015-02-05</em></h4>
+<h4 class="date"><em>2015-03-17</em></h4>
 </div>
 
 
-<p>SaTScan is a powerful stand-alone software program that runs spation-temporal scan statistics. It is carefully optimized and contains many tricks to reduce the computational burden of the approach, which is doubly computationaly intensive. First, scanning itself can be costly, particularly in spatio-temporal settings. However, even more difficult, testing involves resampling (Monte Carlo hypothesis testing). For these reasons, it is not worthwhile to attempt replicating SaTScan. In addition, while SaTScan is not open source, it is distributed free of charge.</p>
+<p>SaTScan is a powerful stand-alone software program that runs spation-temporal scan statistics. It is carefully optimized and contains many tricks to reduce the computational burden of the approach, which is doubly computationaly intensive. First, scanning itself can be costly, particularly in spatio-temporal settings. However, even more difficult, testing involves resampling (Monte Carlo hypothesis testing). While SaTScan is not open source, it is distributed free of charge.</p>
 <p>However, use of SaTScan can be cumbersome. There are two means of access: a GUI, and a batch file. The GUI allows complete control, but precludes automated or repeated operation. The batch file allows this, but may be difficult to integrate into other analyses. The <code>rsatscan</code> package contains a set of functions and defines a class and methods to make it easy to work with SaTScan from R. This should allow easy automation and integration.</p>
 <p>The functions in the package can be grouped into three sets: SaTScan parameter functions that set parameters for SaTScan or write them in a file to the OS; write functions that write R data frames to the OS in SaTScan-readable formats; and the <code>satscan()</code> function, which calls out into the OS, runs SaTScan, and returns a <code>satscan</code> class object. Successful use of the package requires a fairly precise understanding of the SaTScan parameter file, for which users are referred to the SaTScan manual.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rsatscan&quot;</span>)</code></pre>
-<pre><code>## RSaTScan only does anything useful if you have SaTScan-- see http://www.satscan.org/ for free access.</code></pre>
+<pre><code>## rsatscan only does anything useful if you have SaTScan
+## See http://www.satscan.org/ for free access</code></pre>
 <p>Basic usage of the package will:</p>
 <ol style="list-style-type: decimal">
 <li>use the <code>ss.options()</code> function to set SaTScan parameters; these are saved in R</li>
@@ -108,24 +109,24 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">write.cas</span>(NYCfevercas, td, <span class="st">&quot;NYCfever&quot;</span>)
 <span class="kw">write.geo</span>(NYCfevergeo, td, <span class="st">&quot;NYCfever&quot;</span>)</code></pre>
 <p>The <code>write.???</code> functions append the appropriate file extensions to the files they save into the OS.</p>
-<p>Then we’re ready to run SaTScan. The default locations in the function correspond to the location of the executable on my disk, so those or not specified here.</p>
+<p>Then we’re ready to run SaTScan. The location of the SaTScan executable may well differ on you r disk, particularly if you do not use Windows. In a later release of the package, it may be possible to detect the location the executable</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This step omitted in compliance with CRAN policies</span>
 <span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span>
 <span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span>
 <span class="co"># you will also find there fully compiled versions of this vignette with results</span>
 
-<span class="co"># NYCfever = satscan(td, &quot;NYCfever&quot;)</span></code></pre>
+## NYCfever = satscan(td, &quot;NYCfever&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</code></pre>
 <p>The <code>rsatscan</code> package provides a <code>summary</code> method for <code>satscan</code> objects.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summary(NYCfever)</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## summary(NYCfever)</code></pre>
 <p>The <code>satscan</code> object has a slot for each possible output file that SaTScan creates, and contains whatever output files your call happened to generate.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summary.default(NYCfever)</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## summary.default(NYCfever)</code></pre>
 <p>If SaTScan generated a shapefile, <code>satscan()</code> reads it, by way of the <code>rgdal</code> function <code>readOGR()</code>, if it’s available, into a class defined in the <code>sp</code> package. You can use the plot methods defined in the <code>sp</code> package to plot it, or use one of the many packages that builds on the <code>sp</code> package for further processing.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sp::plot(NYCfever$shapeclust)</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## sp::plot(NYCfever$shapeclust)</code></pre>
 <p>It might be interesting to examine the scan statistics from the Monte Carlo steps.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)</span>
+<pre class="sourceCode r"><code class="sourceCode r">## hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)
 
 <span class="co"># Let's draw a line for the clusters in the observed data</span>
-<span class="co"># abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</span></code></pre>
+## abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</code></pre>
 <p>This shows why none of the observed clusters had small p=values.</p>
 </div>
 <div id="poisson-spatio-temporal-example-new-mexico-brain-tumor-data" class="section level1">
@@ -142,11 +143,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">ss.options</span>(<span class="kw">c</span>(<span class="st">&quot;NonCompactnessPenalty=0&quot;</span>, <span class="st">&quot;ReportGiniClusters=n&quot;</span>, <span class="st">&quot;LogRunToHistoryFile=n&quot;</span>))
 
 <span class="kw">write.ss.prm</span>(td,<span class="st">&quot;testnm&quot;</span>)
-<span class="co"># testnm = satscan(td,&quot;testnm&quot;)</span></code></pre>
-<p>Note that the parameter file need not have the same name as the case and other input files, which also need not share a name, though it may be helpful in keeping things organized later.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># summary(testnm)</span></code></pre>
+## testnm = satscan(td,&quot;testnm&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</code></pre>
+<p>Note that the parameter file need not have the same name as the case and other input files, which also need not share a name, though it may be helpful in keeping things organized.</p>
+<pre class="sourceCode r"><code class="sourceCode r">## summary(testnm)</code></pre>
 <p>One of the elements of a <code>satscan</code> class object is the parameter set which was used to call SaTScan. This may be useful, later.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># head(testnm$prm,10)</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## head(testnm$prm,10)</code></pre>
 </div>
 <div id="bernoulli-purely-spatial-example-north-humberside-leukemia-and-lymphoma" class="section level1">
 <h1>Bernoulli purely spatial example: North Humberside leukemia and lymphoma</h1>
@@ -163,9 +164,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="dt">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))
 
 <span class="kw">write.ss.prm</span>(td, <span class="st">&quot;NHumberside&quot;</span>)
-<span class="co"># NHumberside = satscan(td, &quot;NHumberside&quot;)</span>
+## NHumberside = satscan(td, &quot;NHumberside&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)
 
-<span class="co"># summary(NHumberside)</span></code></pre>
+## summary(NHumberside)</code></pre>
 </div>
 
 

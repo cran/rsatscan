@@ -10,7 +10,7 @@
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2015-02-05" />
+<meta name="date" content="2015-03-17" />
 
 <title>Simulation experiments with SaTScan and rsatscan</title>
 
@@ -54,11 +54,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Simulation experiments with SaTScan and rsatscan</h1>
 <h4 class="author"><em>Ken Kleinman</em></h4>
-<h4 class="date"><em>2015-02-05</em></h4>
+<h4 class="date"><em>2015-03-17</em></h4>
 </div>
 
 
-<p>In this vignette, I use the space-time permutation scan to show making data in R, running SaTScan on the generated data, and collecting the results.</p>
+<p>In this vignette, I use the space-time permutation scan to show how the rsatscan package can be used to simplify the process of making data in R, running SaTScan on the generated data, and collecting the results, presumably leading to quicker and easier accumulation of results.</p>
 <p>I begin by making data on a 10*10 grid of locations, over 30 days. Each day, each location has a 0.1 probability of having a single case.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
 mygeo =<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dv">1</span>:<span class="dv">10</span>,<span class="dv">1</span>:<span class="dv">10</span>)
