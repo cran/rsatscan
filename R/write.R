@@ -9,7 +9,7 @@
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.geo = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   if (dim(x)[2] < 2) stop("Need a data frame with 2 or more columns")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".geo"), 
               row.names=userownames, col.names=FALSE)
@@ -28,7 +28,7 @@ write.geo = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.cas = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   if (dim(x)[2] < 2) stop("Need a data frame with 2 or more columns")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".cas"), 
               row.names=userownames, col.names=FALSE)
@@ -47,7 +47,7 @@ write.cas = function(x, location, filename, userownames = FALSE){
 #' @export
 
 write.ctl = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   if (dim(x)[2] > 3) stop("Need a data frame with 3 or fewer columns")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".ctl"), 
               row.names=userownames, col.names=FALSE)
@@ -65,7 +65,7 @@ write.ctl = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.nbr = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".nbr"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -82,7 +82,7 @@ write.nbr = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.met = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".met"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -98,7 +98,7 @@ write.met = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.max = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".max"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -115,7 +115,7 @@ write.max = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.adj = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".adj"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -131,7 +131,7 @@ write.adj = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.ha = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".ha"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -147,7 +147,7 @@ write.ha = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.pop = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".pop"), 
               row.names=userownames, col.names=FALSE)
 } 
@@ -163,7 +163,7 @@ write.pop = function(x, location, filename, userownames = FALSE){
 #' @param userownames If TRUE, will write the row names into the file.
 #' @export
 write.grd = function(x, location, filename, userownames = FALSE){
-  if (class(x) != "data.frame") stop("Need a data frame")
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".grd"), 
               row.names=userownames, col.names=FALSE)
 } 

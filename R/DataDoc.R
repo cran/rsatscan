@@ -9,7 +9,7 @@
 #'   }
 #'   
 #' @format A data frame with 192 observations and 3 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NYCfevergeo
 NULL
 
@@ -24,7 +24,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 194 observations and 3 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NYCfevercas
 NULL
 
@@ -41,7 +41,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 1175 observations and 5 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NMcas
 NULL
 
@@ -58,7 +58,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 3456 observations and 5 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NMpop
 NULL
 
@@ -73,7 +73,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 194 observations and 3 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NMgeo
 NULL
 
@@ -88,7 +88,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 191 observations and 3 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NHumbersidegeo
 NULL
 
@@ -102,7 +102,7 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 191 observations and 2 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NHumbersidecas
 NULL
 
@@ -117,6 +117,6 @@ NULL
 #'   }
 #'   
 #' @format A data frame with 191 observations and 2 variables
-#' @source Distributed with SaTScan software: \url{http://www.satscan.org}
+#' @source Distributed with SaTScan software: \url{https://www.satscan.org}
 #' @name NHumbersidectl
 NULL

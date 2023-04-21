@@ -1,49 +1,335 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2015-03-17" />
+<meta name="date" content="2023-04-21" />
 
 <title>rsatscan</title>
 
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
-</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
 </style>
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
 
 </head>
 
@@ -51,30 +337,53 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 
-<div id="header">
-<h1 class="title">rsatscan</h1>
-<h4 class="author"><em>Ken Kleinman</em></h4>
-<h4 class="date"><em>2015-03-17</em></h4>
-</div>
+
+<h1 class="title toc-ignore">rsatscan</h1>
+<h4 class="author">Ken Kleinman</h4>
+<h4 class="date">2023-04-21</h4>
 
 
-<p>SaTScan is a powerful stand-alone software program that runs spation-temporal scan statistics. It is carefully optimized and contains many tricks to reduce the computational burden of the approach, which is doubly computationaly intensive. First, scanning itself can be costly, particularly in spatio-temporal settings. However, even more difficult, testing involves resampling (Monte Carlo hypothesis testing). While SaTScan is not open source, it is distributed free of charge.</p>
-<p>However, use of SaTScan can be cumbersome. There are two means of access: a GUI, and a batch file. The GUI allows complete control, but precludes automated or repeated operation. The batch file allows this, but may be difficult to integrate into other analyses. The <code>rsatscan</code> package contains a set of functions and defines a class and methods to make it easy to work with SaTScan from R. This should allow easy automation and integration.</p>
-<p>The functions in the package can be grouped into three sets: SaTScan parameter functions that set parameters for SaTScan or write them in a file to the OS; write functions that write R data frames to the OS in SaTScan-readable formats; and the <code>satscan()</code> function, which calls out into the OS, runs SaTScan, and returns a <code>satscan</code> class object. Successful use of the package requires a fairly precise understanding of the SaTScan parameter file, for which users are referred to the SaTScan manual.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rsatscan&quot;</span>)</code></pre>
-<pre><code>## rsatscan only does anything useful if you have SaTScan
-## See http://www.satscan.org/ for free access</code></pre>
+
+<p>SaTScan is a powerful stand-alone software program that runs
+spation-temporal scan statistics. It is carefully optimized and contains
+many tricks to reduce the computational burden of the approach, which is
+doubly computationaly intensive. First, scanning itself can be costly,
+particularly in spatio-temporal settings. However, even more difficult,
+testing involves resampling (Monte Carlo hypothesis testing). While
+SaTScan is not open source, it is distributed free of charge.</p>
+<p>However, use of SaTScan can be cumbersome. There are two means of
+access: a GUI, and a batch file. The GUI allows complete control, but
+precludes automated or repeated operation. The batch file allows this,
+but may be difficult to integrate into other analyses. The
+<code>rsatscan</code> package contains a set of functions and defines a
+class and methods to make it easy to work with SaTScan from R. This
+should allow easy automation and integration.</p>
+<p>The functions in the package can be grouped into three sets: SaTScan
+parameter functions that set parameters for SaTScan or write them in a
+file to the OS; write functions that write R data frames to the OS in
+SaTScan-readable formats; and the <code>satscan()</code> function, which
+calls out into the OS, runs SaTScan, and returns a <code>satscan</code>
+class object. Successful use of the package requires a fairly precise
+understanding of the SaTScan parameter file, for which users are
+referred to the SaTScan manual.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rsatscan&quot;</span>)</span></code></pre></div>
+<pre><code>## rsatscan only does anything useful if you have SaTScan</code></pre>
+<pre><code>## See http://www.satscan.org/ for free access</code></pre>
 <p>Basic usage of the package will:</p>
 <ol style="list-style-type: decimal">
-<li>use the <code>ss.options()</code> function to set SaTScan parameters; these are saved in R</li>
-<li>use the <code>write.ss.prm()</code> function to write the SaTScan parameter file</li>
+<li>use the <code>ss.options()</code> function to set SaTScan
+parameters; these are saved in R</li>
+<li>use the <code>write.ss.prm()</code> function to write the SaTScan
+parameter file</li>
 <li>use the <code>satscan()</code> function to run SaTScan</li>
-<li>use <code>summary()</code> on the <code>satscan</code> object and proceed to analyze the results from SaTScan in R.</li>
+<li>use <code>summary()</code> on the <code>satscan</code> object and
+proceed to analyze the results from SaTScan in R.</li>
 </ol>
 <div id="space-time-permutation-example-nyc-fever-data" class="section level1">
 <h1>Space-Time Permutation example: NYC fever data</h1>
-<p>The New York City fever data, which are distributed with SaTScan, are also included with the package.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(NYCfevercas)</code></pre>
+<p>The New York City fever data, which are distributed with SaTScan, are
+also included with the package.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span>(NYCfevercas)</span></code></pre></div>
 <pre><code>##     zip cases       date
 ## 1 11229     1 2001/11/22
 ## 2 11208     1 2001/11/13
@@ -82,7 +391,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ## 4 11212     1  2001/11/3
 ## 5 11374     1 2001/11/10
 ## 6 10452     1 2001/11/20</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(NYCfevergeo)</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">head</span>(NYCfevergeo)</span></code></pre></div>
 <pre><code>##     zip      lat      long
 ## 1 10001 40.75037 -73.99674
 ## 2 10002 40.72199 -73.99000
@@ -90,85 +399,123 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ## 4 10004 40.68834 -74.02002
 ## 5 10005 40.70550 -74.00816
 ## 6 10006 40.70754 -74.01292</code></pre>
-<p>For good style, an analysis would begin by resetting the paremeter file:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">invisible</span>(<span class="kw">ss.options</span>(<span class="dt">reset=</span><span class="ot">TRUE</span>))</code></pre>
-<p>Then, one would change parameters as desired. This can be done in as many or few steps as you like; the previous state of the parameter set is retained, as in <code>par()</code> or <code>options()</code>. Here, the parameters used in the example from the SaTScan manual are replicated:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">CaseFile=</span><span class="st">&quot;NYCfever.cas&quot;</span>, <span class="dt">PrecisionCaseTimes=</span><span class="dv">3</span>))
-<span class="kw">ss.options</span>(<span class="kw">c</span>(<span class="st">&quot;StartDate=2001/11/1&quot;</span>,<span class="st">&quot;EndDate=2001/11/24&quot;</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">CoordinatesFile=</span><span class="st">&quot;NYCfever.geo&quot;</span>, <span class="dt">AnalysisType=</span><span class="dv">4</span>, <span class="dt">ModelType=</span><span class="dv">2</span>, <span class="dt">TimeAggregationUnits=</span><span class="dv">3</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">UseDistanceFromCenterOption=</span><span class="st">&quot;y&quot;</span>, <span class="dt">MaxSpatialSizeInDistanceFromCenter=</span><span class="dv">3</span>, <span class="dt">NonCompactnessPenalty=</span><span class="dv">0</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">MaxTemporalSizeInterpretation=</span><span class="dv">1</span>, <span class="dt">MaxTemporalSize=</span><span class="dv">7</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">ProspectiveStartDate=</span><span class="st">&quot;2001/11/24&quot;</span>, <span class="dt">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="dt">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</code></pre>
-<p>Note that the second call to <code>ss.options()</code> uses the character vector format, while the others use the list format; either works.</p>
-<p>It might be reasonable at this point to check what the parameter file looks like:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">ss.options</span>(),<span class="dv">3</span>)</code></pre>
+<p>For good style, an analysis would begin by resetting the paremeter
+file:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span></code></pre></div>
+<p>Then, one would change parameters as desired. This can be done in as
+many or few steps as you like; the previous state of the parameter set
+is retained, as in <code>par()</code> or <code>options()</code>. Here,
+the parameters used in the example from the SaTScan manual are
+replicated:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NYCfever.cas&quot;</span>, <span class="at">PrecisionCaseTimes=</span><span class="dv">3</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;StartDate=2001/11/1&quot;</span>,<span class="st">&quot;EndDate=2001/11/24&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NYCfever.geo&quot;</span>, <span class="at">AnalysisType=</span><span class="dv">4</span>, <span class="at">ModelType=</span><span class="dv">2</span>, <span class="at">TimeAggregationUnits=</span><span class="dv">3</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">UseDistanceFromCenterOption=</span><span class="st">&quot;y&quot;</span>, <span class="at">MaxSpatialSizeInDistanceFromCenter=</span><span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">MaxTemporalSizeInterpretation=</span><span class="dv">1</span>, <span class="at">MaxTemporalSize=</span><span class="dv">7</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ProspectiveStartDate=</span><span class="st">&quot;2001/11/24&quot;</span>, <span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span></code></pre></div>
+<p>Note that the second call to <code>ss.options()</code> uses the
+character vector format, while the others use the list format; either
+works.</p>
+<p>It might be reasonable at this point to check what the parameter file
+looks like:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">ss.options</span>(),<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;[Input]&quot;               &quot;;case data filename&quot;   &quot;CaseFile=NYCfever.cas&quot;</code></pre>
-<p>Then, we write the parameter file, the case file, and the geometry file to some writeable location in the OS, using the functions in package. These ensure that SaTScan-readable formats are used.</p>
-<pre class="sourceCode r"><code class="sourceCode r">td =<span class="st"> </span><span class="kw">tempdir</span>()
-<span class="kw">write.ss.prm</span>(td, <span class="st">&quot;NYCfever&quot;</span>)
-<span class="kw">write.cas</span>(NYCfevercas, td, <span class="st">&quot;NYCfever&quot;</span>)
-<span class="kw">write.geo</span>(NYCfevergeo, td, <span class="st">&quot;NYCfever&quot;</span>)</code></pre>
-<p>The <code>write.???</code> functions append the appropriate file extensions to the files they save into the OS.</p>
-<p>Then we’re ready to run SaTScan. The location of the SaTScan executable may well differ on you r disk, particularly if you do not use Windows. In a later release of the package, it may be possible to detect the location the executable</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This step omitted in compliance with CRAN policies</span>
-<span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span>
-<span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span>
-<span class="co"># you will also find there fully compiled versions of this vignette with results</span>
-
-## NYCfever = satscan(td, &quot;NYCfever&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</code></pre>
-<p>The <code>rsatscan</code> package provides a <code>summary</code> method for <code>satscan</code> objects.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## summary(NYCfever)</code></pre>
-<p>The <code>satscan</code> object has a slot for each possible output file that SaTScan creates, and contains whatever output files your call happened to generate.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## summary.default(NYCfever)</code></pre>
-<p>If SaTScan generated a shapefile, <code>satscan()</code> reads it, by way of the <code>rgdal</code> function <code>readOGR()</code>, if it’s available, into a class defined in the <code>sp</code> package. You can use the plot methods defined in the <code>sp</code> package to plot it, or use one of the many packages that builds on the <code>sp</code> package for further processing.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## sp::plot(NYCfever$shapeclust)</code></pre>
-<p>It might be interesting to examine the scan statistics from the Monte Carlo steps.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)
-
-<span class="co"># Let's draw a line for the clusters in the observed data</span>
-## abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</code></pre>
+<p>Then, we write the parameter file, the case file, and the geometry
+file to some writeable location in the OS, using the functions in
+package. These ensure that SaTScan-readable formats are used.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>td <span class="ot">=</span> <span class="fu">tempdir</span>()</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NYCfever&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">write.cas</span>(NYCfevercas, td, <span class="st">&quot;NYCfever&quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">write.geo</span>(NYCfevergeo, td, <span class="st">&quot;NYCfever&quot;</span>)</span></code></pre></div>
+<p>The <code>write.???</code> functions append the appropriate file
+extensions to the files they save into the OS.</p>
+<p>Then we’re ready to run SaTScan. The location of the SaTScan
+executable may well differ on you r disk, particularly if you do not use
+Windows. In a later release of the package, it may be possible to detect
+the location the executable</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># This step omitted in compliance with CRAN policies</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co"># you will also find there fully compiled versions of this vignette with results</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="do">## NYCfever = satscan(td, &quot;NYCfever&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span></code></pre></div>
+<p>The <code>rsatscan</code> package provides a <code>summary</code>
+method for <code>satscan</code> objects.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="do">## summary(NYCfever)</span></span></code></pre></div>
+<p>The <code>satscan</code> object has a slot for each possible output
+file that SaTScan creates, and contains whatever output files your call
+happened to generate.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## summary.default(NYCfever)</span></span></code></pre></div>
+<p>If SaTScan generated a shapefile, <code>satscan()</code> reads it, by
+way of the <code>rgdal</code> function <code>readOGR()</code>, if it’s
+available, into a class defined in the <code>sp</code> package. You can
+use the plot methods defined in the <code>sp</code> package to plot it,
+or use one of the many packages that builds on the <code>sp</code>
+package for further processing.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="do">## sp::plot(NYCfever$shapeclust)</span></span></code></pre></div>
+<p>It might be interesting to examine the scan statistics from the Monte
+Carlo steps.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># Let&#39;s draw a line for the clusters in the observed data</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="do">## abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</span></span></code></pre></div>
 <p>This shows why none of the observed clusters had small p=values.</p>
 </div>
 <div id="poisson-spatio-temporal-example-new-mexico-brain-tumor-data" class="section level1">
 <h1>Poisson spatio-temporal example: New Mexico brain tumor data</h1>
-<p>This is another data set included with <code>SaTScan</code>. It differs from the NYC fever examle in that denominators are available; these are porvided in a population file. The analysis uses the Poisson model rather than the Spatio-temporal permutation.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.cas</span>(NMcas, td,<span class="st">&quot;NM&quot;</span>)
-<span class="kw">write.geo</span>(NMgeo, td,<span class="st">&quot;NM&quot;</span>)
-<span class="kw">write.pop</span>(NMpop, td,<span class="st">&quot;NM&quot;</span>)</code></pre>
-<p>Again, replicating the examples from the SaTScan user guide, we set up and then write the parameter file, then run SaTScan.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">invisible</span>(<span class="kw">ss.options</span>(<span class="dt">reset=</span><span class="ot">TRUE</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">CaseFile=</span><span class="st">&quot;NM.cas&quot;</span>,<span class="dt">StartDate=</span><span class="st">&quot;1973/1/1&quot;</span>,<span class="dt">EndDate=</span><span class="st">&quot;1991/12/31&quot;</span>, 
-                <span class="dt">PopulationFile=</span><span class="st">&quot;NM.pop&quot;</span>,
-                <span class="dt">CoordinatesFile=</span><span class="st">&quot;NM.geo&quot;</span>, <span class="dt">CoordinatesType=</span><span class="dv">0</span>, <span class="dt">AnalysisType=</span><span class="dv">3</span>))
-<span class="kw">ss.options</span>(<span class="kw">c</span>(<span class="st">&quot;NonCompactnessPenalty=0&quot;</span>, <span class="st">&quot;ReportGiniClusters=n&quot;</span>, <span class="st">&quot;LogRunToHistoryFile=n&quot;</span>))
-
-<span class="kw">write.ss.prm</span>(td,<span class="st">&quot;testnm&quot;</span>)
-## testnm = satscan(td,&quot;testnm&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</code></pre>
-<p>Note that the parameter file need not have the same name as the case and other input files, which also need not share a name, though it may be helpful in keeping things organized.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## summary(testnm)</code></pre>
-<p>One of the elements of a <code>satscan</code> class object is the parameter set which was used to call SaTScan. This may be useful, later.</p>
-<pre class="sourceCode r"><code class="sourceCode r">## head(testnm$prm,10)</code></pre>
+<p>This is another data set included with <code>SaTScan</code>. It
+differs from the NYC fever examle in that denominators are available;
+these are porvided in a population file. The analysis uses the Poisson
+model rather than the Spatio-temporal permutation.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">write.cas</span>(NMcas, td,<span class="st">&quot;NM&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">write.geo</span>(NMgeo, td,<span class="st">&quot;NM&quot;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">write.pop</span>(NMpop, td,<span class="st">&quot;NM&quot;</span>)</span></code></pre></div>
+<p>Again, replicating the examples from the SaTScan user guide, we set
+up and then write the parameter file, then run SaTScan.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NM.cas&quot;</span>,<span class="at">StartDate=</span><span class="st">&quot;1973/1/1&quot;</span>,<span class="at">EndDate=</span><span class="st">&quot;1991/12/31&quot;</span>, </span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>                <span class="at">PopulationFile=</span><span class="st">&quot;NM.pop&quot;</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>                <span class="at">CoordinatesFile=</span><span class="st">&quot;NM.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">AnalysisType=</span><span class="dv">3</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;NonCompactnessPenalty=0&quot;</span>, <span class="st">&quot;ReportGiniClusters=n&quot;</span>, <span class="st">&quot;LogRunToHistoryFile=n&quot;</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td,<span class="st">&quot;testnm&quot;</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="do">## testnm = satscan(td,&quot;testnm&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span></code></pre></div>
+<p>Note that the parameter file need not have the same name as the case
+and other input files, which also need not share a name, though it may
+be helpful in keeping things organized.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="do">## summary(testnm)</span></span></code></pre></div>
+<p>One of the elements of a <code>satscan</code> class object is the
+parameter set which was used to call SaTScan. This may be useful,
+later.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="do">## head(testnm$prm,10)</span></span></code></pre></div>
 </div>
 <div id="bernoulli-purely-spatial-example-north-humberside-leukemia-and-lymphoma" class="section level1">
-<h1>Bernoulli purely spatial example: North Humberside leukemia and lymphoma</h1>
-<p>A third data set included with <code>SaTScan</code> is also included with the package. This one has cases and controls, and uses the Bernoulli model. We replicate the parameters from the <code>SaTScan</code> manual again.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.cas</span>(NHumbersidecas, td, <span class="st">&quot;NHumberside&quot;</span>)
-<span class="kw">write.ctl</span>(NHumbersidectl, td, <span class="st">&quot;NHumberside&quot;</span>)
-<span class="kw">write.geo</span>(NHumbersidegeo, td, <span class="st">&quot;NHumberside&quot;</span>)
-
-<span class="kw">invisible</span>(<span class="kw">ss.options</span>(<span class="dt">reset=</span><span class="ot">TRUE</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">CaseFile=</span><span class="st">&quot;NHumberside.cas&quot;</span>, <span class="dt">ControlFile=</span><span class="st">&quot;NHumberside.ctl&quot;</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">PrecisionCaseTimes=</span><span class="dv">0</span>, <span class="dt">StartDate=</span><span class="st">&quot;2001/11/1&quot;</span>, <span class="dt">EndDate=</span><span class="st">&quot;2001/11/24&quot;</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">CoordinatesFile=</span><span class="st">&quot;NHumberside.geo&quot;</span>, <span class="dt">CoordinatesType=</span><span class="dv">0</span>, <span class="dt">ModelType=</span><span class="dv">1</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">TimeAggregationUnits =</span> <span class="dv">3</span>, <span class="dt">NonCompactnessPenalty=</span><span class="dv">0</span>))
-<span class="kw">ss.options</span>(<span class="kw">list</span>(<span class="dt">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="dt">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))
-
-<span class="kw">write.ss.prm</span>(td, <span class="st">&quot;NHumberside&quot;</span>)
-## NHumberside = satscan(td, &quot;NHumberside&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)
-
-## summary(NHumberside)</code></pre>
+<h1>Bernoulli purely spatial example: North Humberside leukemia and
+lymphoma</h1>
+<p>A third data set included with <code>SaTScan</code> is also included
+with the package. This one has cases and controls, and uses the
+Bernoulli model. We replicate the parameters from the
+<code>SaTScan</code> manual again.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">write.cas</span>(NHumbersidecas, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">write.ctl</span>(NHumbersidectl, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">write.geo</span>(NHumbersidegeo, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NHumberside.cas&quot;</span>, <span class="at">ControlFile=</span><span class="st">&quot;NHumberside.ctl&quot;</span>))</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">PrecisionCaseTimes=</span><span class="dv">0</span>, <span class="at">StartDate=</span><span class="st">&quot;2001/11/1&quot;</span>, <span class="at">EndDate=</span><span class="st">&quot;2001/11/24&quot;</span>))</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NHumberside.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">ModelType=</span><span class="dv">1</span>))</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">TimeAggregationUnits =</span> <span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="do">## NHumberside = satscan(td, &quot;NHumberside&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="do">## summary(NHumberside)</span></span></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
@@ -176,7 +523,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

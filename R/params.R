@@ -100,7 +100,7 @@ ss.options = function (invals=NULL, reset=FALSE) {
   if (reset == TRUE) ssenv$.ss.params = ssenv$.ss.params.defaults
   if (is.null(invals)) {return(ssenv$.ss.params)}
   else {
-    if (class(invals) == "list") invals = charlistopts(invals)
+    if (inherits(invals, "list")) invals = charlistopts(invals)
     ssenv$.ss.params =  subin(invals, inparms)
     invisible(ssenv$.ss.params)
   }
@@ -132,7 +132,7 @@ ss.options = function (invals=NULL, reset=FALSE) {
 #' @return Nothing.  
 ss.options.extra = function(invals=NULL) {
   if (is.null(invals)) stop("This function doesn't do anything when there is no input")
-  if (class(invals) != "character") stop("Please input a character vector")
+  if (!inherits(invals, "character")) stop("Please input a character vector")
   else {
     ssenv$.ss.params =  c(ssenv$.ss.params, invals)
     invisible()
