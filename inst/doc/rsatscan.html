@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2023-04-21" />
+<meta name="date" content="2023-05-22" />
 
 <title>rsatscan</title>
 
@@ -340,14 +340,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">rsatscan</h1>
 <h4 class="author">Ken Kleinman</h4>
-<h4 class="date">2023-04-21</h4>
+<h4 class="date">2023-05-22</h4>
 
 
 
 <p>SaTScan is a powerful stand-alone software program that runs
-spation-temporal scan statistics. It is carefully optimized and contains
+spatio-temporal scan statistics. It is carefully optimized and contains
 many tricks to reduce the computational burden of the approach, which is
-doubly computationaly intensive. First, scanning itself can be costly,
+doubly computationally intensive. First, scanning itself can be costly,
 particularly in spatio-temporal settings. However, even more difficult,
 testing involves resampling (Monte Carlo hypothesis testing). While
 SaTScan is not open source, it is distributed free of charge.</p>
@@ -399,95 +399,101 @@ also included with the package.</p>
 ## 4 10004 40.68834 -74.02002
 ## 5 10005 40.70550 -74.00816
 ## 6 10006 40.70754 -74.01292</code></pre>
-<p>For good style, an analysis would begin by resetting the paremeter
+<p>For good style, an analysis would begin by resetting the parameter
 file:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span></code></pre></div>
+<p>Parameters for a specific SaTScan version (&gt;= 9.2) can be set
+using the ‘version’ argument:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>, <span class="at">version=</span><span class="st">&quot;10.1&quot;</span>))</span></code></pre></div>
+<p>If a version is not specified, the parameters will be set to the
+latest version available in ‘rsatscan’.</p>
 <p>Then, one would change parameters as desired. This can be done in as
 many or few steps as you like; the previous state of the parameter set
 is retained, as in <code>par()</code> or <code>options()</code>. Here,
 the parameters used in the example from the SaTScan manual are
 replicated:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NYCfever.cas&quot;</span>, <span class="at">PrecisionCaseTimes=</span><span class="dv">3</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;StartDate=2001/11/1&quot;</span>,<span class="st">&quot;EndDate=2001/11/24&quot;</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NYCfever.geo&quot;</span>, <span class="at">AnalysisType=</span><span class="dv">4</span>, <span class="at">ModelType=</span><span class="dv">2</span>, <span class="at">TimeAggregationUnits=</span><span class="dv">3</span>))</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">UseDistanceFromCenterOption=</span><span class="st">&quot;y&quot;</span>, <span class="at">MaxSpatialSizeInDistanceFromCenter=</span><span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">MaxTemporalSizeInterpretation=</span><span class="dv">1</span>, <span class="at">MaxTemporalSize=</span><span class="dv">7</span>))</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ProspectiveStartDate=</span><span class="st">&quot;2001/11/24&quot;</span>, <span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NYCfever.cas&quot;</span>, <span class="at">PrecisionCaseTimes=</span><span class="dv">3</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;StartDate=2001/11/1&quot;</span>,<span class="st">&quot;EndDate=2001/11/24&quot;</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NYCfever.geo&quot;</span>, <span class="at">AnalysisType=</span><span class="dv">4</span>, <span class="at">ModelType=</span><span class="dv">2</span>, <span class="at">TimeAggregationUnits=</span><span class="dv">3</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">UseDistanceFromCenterOption=</span><span class="st">&quot;y&quot;</span>, <span class="at">MaxSpatialSizeInDistanceFromCenter=</span><span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">MaxTemporalSizeInterpretation=</span><span class="dv">1</span>, <span class="at">MaxTemporalSize=</span><span class="dv">7</span>))</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ProspectiveStartDate=</span><span class="st">&quot;2001/11/24&quot;</span>, <span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">SaveSimLLRsDBase=</span><span class="st">&quot;y&quot;</span>))</span></code></pre></div>
 <p>Note that the second call to <code>ss.options()</code> uses the
 character vector format, while the others use the list format; either
 works.</p>
 <p>It might be reasonable at this point to check what the parameter file
 looks like:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">ss.options</span>(),<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">ss.options</span>(),<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;[Input]&quot;               &quot;;case data filename&quot;   &quot;CaseFile=NYCfever.cas&quot;</code></pre>
 <p>Then, we write the parameter file, the case file, and the geometry
 file to some writeable location in the OS, using the functions in
 package. These ensure that SaTScan-readable formats are used.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>td <span class="ot">=</span> <span class="fu">tempdir</span>()</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NYCfever&quot;</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">write.cas</span>(NYCfevercas, td, <span class="st">&quot;NYCfever&quot;</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">write.geo</span>(NYCfevergeo, td, <span class="st">&quot;NYCfever&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>td <span class="ot">=</span> <span class="fu">tempdir</span>()</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NYCfever&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">write.cas</span>(NYCfevercas, td, <span class="st">&quot;NYCfever&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="fu">write.geo</span>(NYCfevergeo, td, <span class="st">&quot;NYCfever&quot;</span>)</span></code></pre></div>
 <p>The <code>write.???</code> functions append the appropriate file
 extensions to the files they save into the OS.</p>
-<p>Then we’re ready to run SaTScan. The location of the SaTScan
+<p>Then we’re ready to run SaTScan. The location and name of the SaTScan
 executable may well differ on you r disk, particularly if you do not use
 Windows. In a later release of the package, it may be possible to detect
 the location the executable</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># This step omitted in compliance with CRAN policies</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co"># you will also find there fully compiled versions of this vignette with results</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="do">## NYCfever = satscan(td, &quot;NYCfever&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># This step omitted in compliance with CRAN policies</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co"># you will also find there fully compiled versions of this vignette with results</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="do">## NYCfever = satscan(td, &quot;NYCfever&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span></code></pre></div>
 <p>The <code>rsatscan</code> package provides a <code>summary</code>
 method for <code>satscan</code> objects.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="do">## summary(NYCfever)</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## summary(NYCfever)</span></span></code></pre></div>
 <p>The <code>satscan</code> object has a slot for each possible output
 file that SaTScan creates, and contains whatever output files your call
 happened to generate.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## summary.default(NYCfever)</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="do">## summary.default(NYCfever)</span></span></code></pre></div>
 <p>If SaTScan generated a shapefile, <code>satscan()</code> reads it, by
 way of the <code>rgdal</code> function <code>readOGR()</code>, if it’s
 available, into a class defined in the <code>sp</code> package. You can
 use the plot methods defined in the <code>sp</code> package to plot it,
 or use one of the many packages that builds on the <code>sp</code>
 package for further processing.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="do">## sp::plot(NYCfever$shapeclust)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## sp::plot(NYCfever$shapeclust)</span></span></code></pre></div>
 <p>It might be interesting to examine the scan statistics from the Monte
 Carlo steps.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># Let&#39;s draw a line for the clusters in the observed data</span></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="do">## abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="do">## hist(unlist(NYCfever$llr), main=&quot;Monte Carlo&quot;)</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co"># Let&#39;s draw a line for the clusters in the observed data</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## abline(v=NYCfever$col[,c(&quot;TEST_STAT&quot;)], col = &quot;red&quot;)</span></span></code></pre></div>
 <p>This shows why none of the observed clusters had small p=values.</p>
 </div>
 <div id="poisson-spatio-temporal-example-new-mexico-brain-tumor-data" class="section level1">
 <h1>Poisson spatio-temporal example: New Mexico brain tumor data</h1>
 <p>This is another data set included with <code>SaTScan</code>. It
-differs from the NYC fever examle in that denominators are available;
-these are porvided in a population file. The analysis uses the Poisson
+differs from the NYC fever example in that denominators are available;
+these are provided in a population file. The analysis uses the Poisson
 model rather than the Spatio-temporal permutation.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">write.cas</span>(NMcas, td,<span class="st">&quot;NM&quot;</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">write.geo</span>(NMgeo, td,<span class="st">&quot;NM&quot;</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">write.pop</span>(NMpop, td,<span class="st">&quot;NM&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">write.cas</span>(NMcas, td,<span class="st">&quot;NM&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">write.geo</span>(NMgeo, td,<span class="st">&quot;NM&quot;</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">write.pop</span>(NMpop, td,<span class="st">&quot;NM&quot;</span>)</span></code></pre></div>
 <p>Again, replicating the examples from the SaTScan user guide, we set
 up and then write the parameter file, then run SaTScan.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NM.cas&quot;</span>,<span class="at">StartDate=</span><span class="st">&quot;1973/1/1&quot;</span>,<span class="at">EndDate=</span><span class="st">&quot;1991/12/31&quot;</span>, </span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>                <span class="at">PopulationFile=</span><span class="st">&quot;NM.pop&quot;</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>                <span class="at">CoordinatesFile=</span><span class="st">&quot;NM.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">AnalysisType=</span><span class="dv">3</span>))</span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;NonCompactnessPenalty=0&quot;</span>, <span class="st">&quot;ReportGiniClusters=n&quot;</span>, <span class="st">&quot;LogRunToHistoryFile=n&quot;</span>))</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td,<span class="st">&quot;testnm&quot;</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="do">## testnm = satscan(td,&quot;testnm&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>, <span class="at">version=</span><span class="st">&quot;10.1&quot;</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NM.cas&quot;</span>,<span class="at">StartDate=</span><span class="st">&quot;1973/1/1&quot;</span>,<span class="at">EndDate=</span><span class="st">&quot;1991/12/31&quot;</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>                <span class="at">PopulationFile=</span><span class="st">&quot;NM.pop&quot;</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>                <span class="at">CoordinatesFile=</span><span class="st">&quot;NM.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">AnalysisType=</span><span class="dv">3</span>))</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">c</span>(<span class="st">&quot;NonCompactnessPenalty=0&quot;</span>, <span class="st">&quot;ReportGiniClusters=n&quot;</span>, <span class="st">&quot;LogRunToHistoryFile=n&quot;</span>))</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td,<span class="st">&quot;testnm&quot;</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="do">## testnm = satscan(td,&quot;testnm&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span></code></pre></div>
 <p>Note that the parameter file need not have the same name as the case
 and other input files, which also need not share a name, though it may
 be helpful in keeping things organized.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="do">## summary(testnm)</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="do">## summary(testnm)</span></span></code></pre></div>
 <p>One of the elements of a <code>satscan</code> class object is the
 parameter set which was used to call SaTScan. This may be useful,
 later.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="do">## head(testnm$prm,10)</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="do">## head(testnm$prm,10)</span></span></code></pre></div>
 </div>
 <div id="bernoulli-purely-spatial-example-north-humberside-leukemia-and-lymphoma" class="section level1">
 <h1>Bernoulli purely spatial example: North Humberside leukemia and
@@ -496,21 +502,21 @@ lymphoma</h1>
 with the package. This one has cases and controls, and uses the
 Bernoulli model. We replicate the parameters from the
 <code>SaTScan</code> manual again.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">write.cas</span>(NHumbersidecas, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">write.ctl</span>(NHumbersidectl, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">write.geo</span>(NHumbersidegeo, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NHumberside.cas&quot;</span>, <span class="at">ControlFile=</span><span class="st">&quot;NHumberside.ctl&quot;</span>))</span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">PrecisionCaseTimes=</span><span class="dv">0</span>, <span class="at">StartDate=</span><span class="st">&quot;2001/11/1&quot;</span>, <span class="at">EndDate=</span><span class="st">&quot;2001/11/24&quot;</span>))</span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NHumberside.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">ModelType=</span><span class="dv">1</span>))</span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">TimeAggregationUnits =</span> <span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span>
-<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NHumberside&quot;</span>)</span>
-<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="do">## NHumberside = satscan(td, &quot;NHumberside&quot;, sslocation=&quot;C:/Program Files (x86)/SaTScan&quot;)</span></span>
-<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a></span>
-<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="do">## summary(NHumberside)</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">write.cas</span>(NHumbersidecas, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">write.ctl</span>(NHumbersidectl, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="fu">write.geo</span>(NHumbersidegeo, td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>, <span class="at">version=</span><span class="st">&quot;10.1&quot;</span>))</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;NHumberside.cas&quot;</span>, <span class="at">ControlFile=</span><span class="st">&quot;NHumberside.ctl&quot;</span>))</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">PrecisionCaseTimes=</span><span class="dv">0</span>, <span class="at">StartDate=</span><span class="st">&quot;2001/11/1&quot;</span>, <span class="at">EndDate=</span><span class="st">&quot;2001/11/24&quot;</span>))</span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CoordinatesFile=</span><span class="st">&quot;NHumberside.geo&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">ModelType=</span><span class="dv">1</span>))</span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">TimeAggregationUnits =</span> <span class="dv">3</span>, <span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>))</span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;NHumberside&quot;</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="do">## NHumberside = satscan(td, &quot;NHumberside&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="do">## summary(NHumberside)</span></span></code></pre></div>
 </div>
 
 

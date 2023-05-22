@@ -18,22 +18,23 @@ write.geo(mygeo, location = td, file = "mygeo", userownames=TRUE)
 write.cas(mycas, location = td, file = "mycas")
 
 ## -----------------------------------------------------------------------------
-invisible(ss.options(reset=TRUE))
+invisible(ss.options(reset=TRUE, version="10.1"))
 ss.options(list(CaseFile="mycas.cas", PrecisionCaseTimes=4))
 ss.options(list(StartDate="1", CoordinatesType=0, TimeAggregationUnits=4))
 ss.options(list(EndDate="30", CoordinatesFile="mygeo.geo", AnalysisType=4, ModelType=2)) 
 ss.options(list(UseDistanceFromCenterOption="y", MaxSpatialSizeInDistanceFromCenter=3)) 
 ss.options(list(NonCompactnessPenalty=0, MaxTemporalSizeInterpretation=1, MaxTemporalSize=7))
 ss.options(list(ProspectiveStartDate="30", ReportGiniClusters="n", LogRunToHistoryFile="n"))
+ss.options(list(SaveSimLLRsDBase="y"))
 
 ## -----------------------------------------------------------------------------
 write.ss.prm(td, "mybase")
 # This step omitted in compliance with CRAN policies
-# Please install SaTScan and run the vignette with this and following code uncommented
-# SaTScan can be downloaded from www.satscan.org, free of charge
+# Please install 'SaTScan' and run the vignette with this and following code uncommented
+# 'SaTScan' can be downloaded from www.satscan.org, free of charge
 # you will also find there fully compiled versions of this vignette with results
 
-# mybase = satscan(td, "mybase")
+# mybase = satscan(td, "mybase", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # mybase$col[3:10]
 
 ## -----------------------------------------------------------------------------
@@ -45,7 +46,7 @@ write.cas(newcas, location = td, file = "mycas")
 ss.options(list(EndDate="31"))
 write.ss.prm(td, "day1")
 
-# day1 = satscan(td, "day1")
+# day1 = satscan(td, "day1", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # day1$col[3:10]
 
 ## -----------------------------------------------------------------------------
@@ -58,7 +59,7 @@ write.cas(newcas, location = td, file = "mycas")
 ss.options(list(EndDate="32"))
 write.ss.prm(td, "day2")
 
-# day2 = satscan(td,"day2")
+# day2 = satscan(td,"day2", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # day2$col[3:10]
 
 ## -----------------------------------------------------------------------------

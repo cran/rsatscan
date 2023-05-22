@@ -6,7 +6,7 @@ require(foreign)
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 
@@ -24,7 +24,7 @@ read.col = function(location,file) foreign::read.dbf(paste0(location,file,".col.
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 
@@ -41,7 +41,7 @@ read.rr = function(location,file) foreign::read.dbf(paste0(location,file,".rr.db
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 
@@ -58,7 +58,7 @@ read.gis = function(location,file) foreign::read.dbf(paste0(location,file,".gis.
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 
@@ -75,7 +75,7 @@ read.llr = function(location,file) foreign::read.dbf(paste0(location,file,".llr.
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 
@@ -92,7 +92,7 @@ read.sci = function(location,file) foreign::read.dbf(paste0(location,file,".sci.
 #' 
 #' @details
 #' This is expected to be a purely internal function.  
-#' It's called by \code{satscan()} with the location and file nmae provided 
+#' It's called by \code{satscan()} with the location and file name provided 
 #' to that function.  Since it's nothing more than \code{readLines()}, it's 
 #' probably nor necessary to even have it as a function.
 #' 

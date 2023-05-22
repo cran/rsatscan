@@ -37,7 +37,7 @@ write.cas = function(x, location, filename, userownames = FALSE){
 
 #' @title Write a SaTScan ctl (control) file
 #' @description Write a SaTScan ctl (control) file
-#' @details Writes the input data frame to the OS, using the .geo extension.  Contents of the data 
+#' @details Writes the input data frame to the OS, using the .ctl extension.  Contents of the data 
 #' frame should be only what you want SaTScan to see.  
 #' This is a simple function that calls write.table, since SaTScan just needs ASCII files.
 #' @param x Your data frame.
@@ -167,6 +167,23 @@ write.grd = function(x, location, filename, userownames = FALSE){
   utils::write.table(x, quote=F, file = paste0(location,"/",filename,".grd"), 
               row.names=userownames, col.names=FALSE)
 } 
+
+#' @title Write a SaTScan ntk (network) file
+#' @description Write a SaTScan ntk (network) file
+#' @details Writes the input data frame to the OS, using the .ntk extension. Contents of the data
+#' frame should be only what you want SaTScan to see.
+#' This is a simple function that calls write.table, since SaTScan just needs ASCII files.
+#' @param x Your data frame.
+#' @param location Directory location where the file should be written
+#' @param filename Name for the output file in the OS; .ntk will be added.
+#' @param userownames If TRUE, will write the row names into the file.
+#' @export
+write.ntk = function(x, location, filename, userownames = FALSE){
+  if (!inherits(x, "data.frame")) stop("Need a data frame")
+  if (dim(x)[2] != 2 && dim(x)[2] != 3) stop("Need a data frame with 2 or 3 columns")
+  utils::write.table(x, quote=F, file = paste0(location,"/",filename,".ntk"),
+              row.names=userownames, col.names=FALSE)
+}
 
 
 

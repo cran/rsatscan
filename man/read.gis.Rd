@@ -19,7 +19,7 @@ Reads a SaTScan output .dbf file.
 }
 \details{
 This is expected to be a purely internal function.  
-It's called by \code{satscan()} with the location and file nmae provided 
+It's called by \code{satscan()} with the location and file name provided 
 to that function.  Since it's nothing more than \code{foreign::read.dbf()}, it's 
 probably nor necessary to even have it as a function.
 }

@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-In this vignette, I use the space-time permutation scan to show how the rsatscan package can be used to simplify the process of making data in R, running SaTScan on the generated data, and collecting the results, presumably leading to quicker and easier accumulation of results.
+In this vignette, I use the space-time permutation scan to show how the 'rsatscan' package can be used to simplify the process of making data in R, running 'SaTScan' on the generated data, and collecting the results, presumably leading to quicker and easier accumulation of results.
 
 I begin by making data on a 10*10 grid of locations, over 30 days.  Each day, each location has a 0.1 probability of having a single case.  
 ```{r}
@@ -29,7 +29,7 @@ head(mygeo)
 head(mycas)
 ```
 
-Now I can write the data into the OS; the row names in the mygeo data.frame object are the location IDs for SaTSCan, so I'm using the `userownames` option to use, rather than ignore, the row names from R in the geography file; in the case file, there is an explicit column with the same information included.
+Now I can write the data into the OS; the row names in the mygeo data.frame object are the location IDs for 'SaTSCan', so I'm using the `userownames` option to use, rather than ignore, the row names from R in the geography file; in the case file, there is an explicit column with the same information included.
 ```{r}
 library("rsatscan")
 td = tempdir()
@@ -39,24 +39,26 @@ write.cas(mycas, location = td, file = "mycas")
 
 Now I'm ready to build the parameter file.  This is adapted pretty closely from the `NYCfever` example in the `rsatscan` vignette.
 ```{r}
-invisible(ss.options(reset=TRUE))
+invisible(ss.options(reset=TRUE, version="10.1"))
 ss.options(list(CaseFile="mycas.cas", PrecisionCaseTimes=4))
 ss.options(list(StartDate="1", CoordinatesType=0, TimeAggregationUnits=4))
 ss.options(list(EndDate="30", CoordinatesFile="mygeo.geo", AnalysisType=4, ModelType=2)) 
 ss.options(list(UseDistanceFromCenterOption="y", MaxSpatialSizeInDistanceFromCenter=3)) 
 ss.options(list(NonCompactnessPenalty=0, MaxTemporalSizeInterpretation=1, MaxTemporalSize=7))
 ss.options(list(ProspectiveStartDate="30", ReportGiniClusters="n", LogRunToHistoryFile="n"))
+ss.options(list(SaveSimLLRsDBase="y"))
 ```
 
-Then I write the parameter file into the OS and run SaTScan using it.  I'll peek in the summary cluster table to see what we got.
+Then I write the parameter file into the OS and run 'SaTScan' using it.  I'll peek in the summary cluster table to see what we got.
+Note that the location and batch file name of your 'SaTScan' installation may vary on your machine.
 ```{r}
 write.ss.prm(td, "mybase")
 # This step omitted in compliance with CRAN policies
-# Please install SaTScan and run the vignette with this and following code uncommented
-# SaTScan can be downloaded from www.satscan.org, free of charge
+# Please install 'SaTScan' and run the vignette with this and following code uncommented
+# 'SaTScan' can be downloaded from www.satscan.org, free of charge
 # you will also find there fully compiled versions of this vignette with results
 
-# mybase = satscan(td, "mybase")
+# mybase = satscan(td, "mybase", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # mybase$col[3:10]
 ```
 As one would hope, there's no evidence of a meaningful cluster.
@@ -74,12 +76,12 @@ I don't need to re-assign any parameter values that don't change between runs.  
 ss.options(list(EndDate="31"))
 write.ss.prm(td, "day1")
 
-# day1 = satscan(td, "day1")
+# day1 = satscan(td, "day1", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # day1$col[3:10]
 ```
 Again, no clusters, as we would expect.
 
-But now let's make a cluster appear.  I create an additional time unit as before, but then select a location to get a heap of extra cases.  Glue the new day to the end of the old case file, write it to the OS, change the end date, and re-run SaTScan.
+But now let's make a cluster appear.  I create an additional time unit as before, but then select a location to get a heap of extra cases.  Glue the new day to the end of the old case file, write it to the OS, change the end date, and re-run 'SaTScan'.
 ```{r}
 newday = data.frame(locid = 1:100, basecas = rbinom(100,1,.1), day = 32)
 newday$basecas[20] =5
@@ -90,7 +92,7 @@ write.cas(newcas, location = td, file = "mycas")
 ss.options(list(EndDate="32"))
 write.ss.prm(td, "day2")
 
-# day2 = satscan(td,"day2")
+# day2 = satscan(td,"day2", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 # day2$col[3:10]
 ```
 This demonstrates that I did detect what I inserted.  I can also extract the wordier section of the report about this cluster.

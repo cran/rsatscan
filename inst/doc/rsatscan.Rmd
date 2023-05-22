@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-SaTScan is a powerful stand-alone software program that runs spation-temporal scan statistics.  It is carefully optimized and contains many tricks to reduce the computational burden of the approach, which is doubly computationaly intensive.  First, scanning itself can be costly, particularly in spatio-temporal settings.  However, even more difficult, testing involves resampling (Monte Carlo hypothesis testing).  While SaTScan is not open source, it is distributed free of charge. 
+SaTScan is a powerful stand-alone software program that runs spatio-temporal scan statistics.  It is carefully optimized and contains many tricks to reduce the computational burden of the approach, which is doubly computationally intensive.  First, scanning itself can be costly, particularly in spatio-temporal settings.  However, even more difficult, testing involves resampling (Monte Carlo hypothesis testing).  While SaTScan is not open source, it is distributed free of charge. 
 
 However, use of SaTScan can be cumbersome.  There are two means of access: a GUI, and a batch file.  The GUI allows complete control, but precludes automated or repeated operation.  The batch file allows this, but may be difficult to integrate into other analyses.  The `rsatscan` package contains a set of functions and defines a class and methods to make it easy to work with SaTScan from R.  This should allow easy automation and integration.
 
@@ -35,10 +35,16 @@ head(NYCfevercas)
 head(NYCfevergeo)
 ```
 
-For good style, an analysis would begin by resetting the paremeter file:
+For good style, an analysis would begin by resetting the parameter file:
 ```{r}
 invisible(ss.options(reset=TRUE))
 ```
+
+Parameters for a specific SaTScan version (>= 9.2) can be set using the 'version' argument:
+```{r}
+invisible(ss.options(reset=TRUE, version="10.1"))
+```
+If a version is not specified, the parameters will be set to the latest version available in 'rsatscan'.
 
 Then, one would change parameters as desired.  This can be done in as many or few steps as you like; the previous state of the parameter set is retained, as in `par()` or `options()`.    Here, the parameters used in the example from the SaTScan manual are replicated:
 ```{r}
@@ -48,6 +54,7 @@ ss.options(list(CoordinatesFile="NYCfever.geo", AnalysisType=4, ModelType=2, Tim
 ss.options(list(UseDistanceFromCenterOption="y", MaxSpatialSizeInDistanceFromCenter=3, NonCompactnessPenalty=0))
 ss.options(list(MaxTemporalSizeInterpretation=1, MaxTemporalSize=7))
 ss.options(list(ProspectiveStartDate="2001/11/24", ReportGiniClusters="n", LogRunToHistoryFile="n"))
+ss.options(list(SaveSimLLRsDBase="y"))
 ```
 Note that the second call to `ss.options()` uses the character vector format, while the others use the list format; either works.
 
@@ -65,14 +72,14 @@ write.geo(NYCfevergeo, td, "NYCfever")
 ```
 The `write.???` functions append the appropriate file extensions to the files they save into the OS.
 
-Then we're ready to run SaTScan.  The location of the SaTScan executable may well differ on you r disk, particularly if you do not use Windows.  In a later release of the package, it may be possible to detect the location the executable
+Then we're ready to run SaTScan.  The location and name of the SaTScan executable may well differ on you r disk, particularly if you do not use Windows.  In a later release of the package, it may be possible to detect the location the executable
 ```{r}
 # This step omitted in compliance with CRAN policies
 # Please install SaTScan and run the vignette with this and following code uncommented
 # SaTScan can be downloaded from www.satscan.org, free of charge
 # you will also find there fully compiled versions of this vignette with results
 
-## NYCfever = satscan(td, "NYCfever", sslocation="C:/Program Files (x86)/SaTScan")
+## NYCfever = satscan(td, "NYCfever", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 ```
 
 The `rsatscan` package provides a `summary` method for `satscan` objects.
@@ -113,7 +120,7 @@ file.remove(paste0(td,"/NYCfever.geo"))
 
 # Poisson spatio-temporal example: New Mexico brain tumor data
 
-This is another data set included with `SaTScan`.  It differs from the NYC fever examle in that denominators are available; these are porvided in a population file.  The analysis uses the Poisson model rather than the Spatio-temporal permutation.
+This is another data set included with `SaTScan`.  It differs from the NYC fever example in that denominators are available; these are provided in a population file.  The analysis uses the Poisson model rather than the Spatio-temporal permutation.
 
 ```{r}
 write.cas(NMcas, td,"NM")
@@ -123,14 +130,14 @@ write.pop(NMpop, td,"NM")
 
 Again, replicating the examples from the SaTScan user guide, we set up and then write the parameter file, then run SaTScan.
 ```{r}
-invisible(ss.options(reset=TRUE))
+invisible(ss.options(reset=TRUE, version="10.1"))
 ss.options(list(CaseFile="NM.cas",StartDate="1973/1/1",EndDate="1991/12/31", 
                 PopulationFile="NM.pop",
                 CoordinatesFile="NM.geo", CoordinatesType=0, AnalysisType=3))
 ss.options(c("NonCompactnessPenalty=0", "ReportGiniClusters=n", "LogRunToHistoryFile=n"))
 
 write.ss.prm(td,"testnm")
-## testnm = satscan(td,"testnm", sslocation="C:/Program Files (x86)/SaTScan")
+## testnm = satscan(td,"testnm", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 ```
 Note that the parameter file need not have the same name as the case and other input files, which also need not share a name, though it may be helpful in keeping things organized.
 ```{r}
@@ -160,7 +167,7 @@ write.cas(NHumbersidecas, td, "NHumberside")
 write.ctl(NHumbersidectl, td, "NHumberside")
 write.geo(NHumbersidegeo, td, "NHumberside")
 
-invisible(ss.options(reset=TRUE))
+invisible(ss.options(reset=TRUE, version="10.1"))
 ss.options(list(CaseFile="NHumberside.cas", ControlFile="NHumberside.ctl"))
 ss.options(list(PrecisionCaseTimes=0, StartDate="2001/11/1", EndDate="2001/11/24"))
 ss.options(list(CoordinatesFile="NHumberside.geo", CoordinatesType=0, ModelType=1))
@@ -168,7 +175,7 @@ ss.options(list(TimeAggregationUnits = 3, NonCompactnessPenalty=0))
 ss.options(list(ReportGiniClusters="n", LogRunToHistoryFile="n"))
 
 write.ss.prm(td, "NHumberside")
-## NHumberside = satscan(td, "NHumberside", sslocation="C:/Program Files (x86)/SaTScan")
+## NHumberside = satscan(td, "NHumberside", sslocation="C:/Program Files/SaTScan", ssbatchfilename="SaTScanBatch64")
 
 ## summary(NHumberside)
 ```

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2023-04-21" />
+<meta name="date" content="2023-05-22" />
 
 <title>Simulation experiments with SaTScan and rsatscan</title>
 
@@ -341,14 +341,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Simulation experiments with SaTScan and
 rsatscan</h1>
 <h4 class="author">Ken Kleinman</h4>
-<h4 class="date">2023-04-21</h4>
+<h4 class="date">2023-05-22</h4>
 
 
 
 <p>In this vignette, I use the space-time permutation scan to show how
-the rsatscan package can be used to simplify the process of making data
-in R, running SaTScan on the generated data, and collecting the results,
-presumably leading to quicker and easier accumulation of results.</p>
+the ‘rsatscan’ package can be used to simplify the process of making
+data in R, running ‘SaTScan’ on the generated data, and collecting the
+results, presumably leading to quicker and easier accumulation of
+results.</p>
 <p>I begin by making data on a 10*10 grid of locations, over 30 days.
 Each day, each location has a 0.1 probability of having a single
 case.</p>
@@ -378,7 +379,7 @@ for convenience.</p>
 ## 5     5       0   1
 ## 6     6       0   1</code></pre>
 <p>Now I can write the data into the OS; the row names in the mygeo
-data.frame object are the location IDs for SaTSCan, so I’m using the
+data.frame object are the location IDs for ‘SaTSCan’, so I’m using the
 <code>userownames</code> option to use, rather than ignore, the row
 names from R in the geography file; in the case file, there is an
 explicit column with the same information included.</p>
@@ -389,22 +390,25 @@ explicit column with the same information included.</p>
 <p>Now I’m ready to build the parameter file. This is adapted pretty
 closely from the <code>NYCfever</code> example in the
 <code>rsatscan</code> vignette.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>))</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>, <span class="at">version=</span><span class="st">&quot;10.1&quot;</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">CaseFile=</span><span class="st">&quot;mycas.cas&quot;</span>, <span class="at">PrecisionCaseTimes=</span><span class="dv">4</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">StartDate=</span><span class="st">&quot;1&quot;</span>, <span class="at">CoordinatesType=</span><span class="dv">0</span>, <span class="at">TimeAggregationUnits=</span><span class="dv">4</span>))</span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">EndDate=</span><span class="st">&quot;30&quot;</span>, <span class="at">CoordinatesFile=</span><span class="st">&quot;mygeo.geo&quot;</span>, <span class="at">AnalysisType=</span><span class="dv">4</span>, <span class="at">ModelType=</span><span class="dv">2</span>)) </span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">UseDistanceFromCenterOption=</span><span class="st">&quot;y&quot;</span>, <span class="at">MaxSpatialSizeInDistanceFromCenter=</span><span class="dv">3</span>)) </span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">NonCompactnessPenalty=</span><span class="dv">0</span>, <span class="at">MaxTemporalSizeInterpretation=</span><span class="dv">1</span>, <span class="at">MaxTemporalSize=</span><span class="dv">7</span>))</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ProspectiveStartDate=</span><span class="st">&quot;30&quot;</span>, <span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span></code></pre></div>
-<p>Then I write the parameter file into the OS and run SaTScan using it.
-I’ll peek in the summary cluster table to see what we got.</p>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">ProspectiveStartDate=</span><span class="st">&quot;30&quot;</span>, <span class="at">ReportGiniClusters=</span><span class="st">&quot;n&quot;</span>, <span class="at">LogRunToHistoryFile=</span><span class="st">&quot;n&quot;</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">SaveSimLLRsDBase=</span><span class="st">&quot;y&quot;</span>))</span></code></pre></div>
+<p>Then I write the parameter file into the OS and run ‘SaTScan’ using
+it. I’ll peek in the summary cluster table to see what we got. Note that
+the location and batch file name of your ‘SaTScan’ installation may vary
+on your machine.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;mybase&quot;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># This step omitted in compliance with CRAN policies</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># Please install SaTScan and run the vignette with this and following code uncommented</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># SaTScan can be downloaded from www.satscan.org, free of charge</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># Please install &#39;SaTScan&#39; and run the vignette with this and following code uncommented</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># &#39;SaTScan&#39; can be downloaded from www.satscan.org, free of charge</span></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co"># you will also find there fully compiled versions of this vignette with results</span></span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># mybase = satscan(td, &quot;mybase&quot;)</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># mybase = satscan(td, &quot;mybase&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co"># mybase$col[3:10]</span></span></code></pre></div>
 <p>As one would hope, there’s no evidence of a meaningful cluster.</p>
 <p>Now, let’s add a day just like the others. I’ll stick it onto the end
@@ -418,13 +422,13 @@ file, I only need to change the end date of the surveillance period.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">EndDate=</span><span class="st">&quot;31&quot;</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;day1&quot;</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># day1 = satscan(td, &quot;day1&quot;)</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># day1 = satscan(td, &quot;day1&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co"># day1$col[3:10]</span></span></code></pre></div>
 <p>Again, no clusters, as we would expect.</p>
 <p>But now let’s make a cluster appear. I create an additional time unit
 as before, but then select a location to get a heap of extra cases. Glue
 the new day to the end of the old case file, write it to the OS, change
-the end date, and re-run SaTScan.</p>
+the end date, and re-run ‘SaTScan’.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>newday <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">locid =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">basecas =</span> <span class="fu">rbinom</span>(<span class="dv">100</span>,<span class="dv">1</span>,.<span class="dv">1</span>), <span class="at">day =</span> <span class="dv">32</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>newday<span class="sc">$</span>basecas[<span class="dv">20</span>] <span class="ot">=</span><span class="dv">5</span></span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>newcas <span class="ot">=</span> <span class="fu">rbind</span>(mycas,newday)</span>
@@ -434,7 +438,7 @@ the end date, and re-run SaTScan.</p>
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="fu">ss.options</span>(<span class="fu">list</span>(<span class="at">EndDate=</span><span class="st">&quot;32&quot;</span>))</span>
 <span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="fu">write.ss.prm</span>(td, <span class="st">&quot;day2&quot;</span>)</span>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co"># day2 = satscan(td,&quot;day2&quot;)</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co"># day2 = satscan(td,&quot;day2&quot;, sslocation=&quot;C:/Program Files/SaTScan&quot;, ssbatchfilename=&quot;SaTScanBatch64&quot;)</span></span>
 <span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co"># day2$col[3:10]</span></span></code></pre></div>
 <p>This demonstrates that I did detect what I inserted. I can also
 extract the wordier section of the report about this cluster.</p>

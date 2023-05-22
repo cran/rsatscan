@@ -38,4 +38,19 @@ Version 0.3.9000 (1-18-2015)
 **  Ubuntu 14.04.1 with SaTScan 9.3.1, R 3.1.2
 
 
+Version 1.0.3 (4-22-2023)
+-----------------------------------------------------------
 
+* Changed version numbering scheme
+* Fixed documentation of 'utils' package import
+* This version tested on:
+**  Windows 10 with SaTScan 10.1, R 4.3.0
+
+Version 1.0.4 (5-19-2023)
+-----------------------------------------------------------
+
+* ss.options() "version" parameter (NULL by default) allows the user to specify a SaTScan version to define parameters, defaulting to version 10.1 parameters
+* Vignettes updated to demonstrate ss.options() "version" parameter
+* write.ntk() to write network file for SaTScan
+* This version tested on:
+**  Windows 10 with SaTScan 10.1, R 4.3.0

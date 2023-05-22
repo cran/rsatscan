@@ -50,16 +50,35 @@
 satscan = function(
   prmlocation,  prmfilename,  sslocation = "c:/progra~2/satscan",
   ssbatchfilename = "SaTScanBatch", cleanup = TRUE, verbose=FALSE) {
-    
-    
+
     ssfile = paste0(stripslash(sslocation), "/", ssbatchfilename)
     if (Sys.which(ssfile) =="")
           stop("SaTScan is not there or is not runnable")
     prmloc = paste0(stripslash(prmlocation),"/")
     infile = paste0(prmloc, prmfilename,".prm")
     if (!file.exists(infile))  stop("I can't find that parameter file")
-    system(paste(shQuote(ssfile), infile), show.output.on.console=verbose)
     prm = suppressWarnings(readLines(infile))
+    
+    # spec.version.line = prm[startsWith(prm, "Version")]
+    # spec.version.string = strsplit(spec.version.line, "=", fixed=TRUE)[[1]][2]
+    # spec.version.components = strsplit(spec.version.string, ".", fixed=TRUE)[[1]]
+    # spec.major.version = as.numeric(spec.version.components[1])
+    # spec.minor.version = as.numeric(spec.version.components[2])
+    # 
+    # satscan.version.command = paste(shQuote(ssfile), "--version")
+    # satscan.version.line = system(satscan.version.command, intern=TRUE)
+    # satscan.version.string = strsplit(satscan.version.line, " ", fixed=TRUE)[[1]][2]
+    # satscan.version.components = strsplit(satscan.version.string, ".", fixed=TRUE)[[1]]
+    # satscan.major.version = as.numeric(satscan.version.components[1])
+    # satscan.minor.version = as.numeric(satscan.version.components[2])
+    # 
+    # if((spec.major.version > satscan.major.version) || ((spec.major.version == satscan.major.version) && (spec.minor.version > satscan.minor.version))) {
+    #   warning.message <- paste0("Warning: You are running SaTScan version ", satscan.version.string, " with parameters defined for version ", spec.version.string)
+    #   warning(warning.message)
+    # }
+    
+    system(paste(shQuote(ssfile), infile), show.output.on.console=verbose)
+    
     mainfile = if  (file.exists(paste0(prmloc,prmfilename,".txt")))
       read.satscanmain(prmloc,prmfilename) else NA
     colfile = if  (file.exists(paste0(prmloc,prmfilename,".col.dbf")))

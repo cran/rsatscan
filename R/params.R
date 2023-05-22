@@ -75,6 +75,9 @@ charlistopts = function (x) {
 #' do nothing.
 #' @param reset If TRUE, will restore the default parameter values described in 
 #' the "Details" section.
+#' @param version A string of the form "#.#" or "#.#.#" specifying a version of 
+#' SaTScan to take parameters from. If this parameter is NULL or not specified,
+#' then parameters are reset based on the latest version of SaTScan.
 #' @return If \code{invals == NULL}, returns the current parameter set, 
 #' as altered by previous 
 #' calls to \code{ss.options()} since the last call with \code{reset=TRUE}.  Otherwise 
@@ -95,9 +98,39 @@ charlistopts = function (x) {
 #' head(ss.options(),3)
 #' }
 #' 
-ss.options = function (invals=NULL, reset=FALSE) {
+ss.options = function (invals=NULL, reset=FALSE, version=NULL) {
+
   inparms = ssenv$.ss.params
-  if (reset == TRUE) ssenv$.ss.params = ssenv$.ss.params.defaults
+  if (reset == TRUE && is.null(version)) ssenv$.ss.params = ssenv$.ss.params.defaults
+  else if (reset == TRUE) {
+    
+    if(!is.character(version)) version = as.character(version)
+    
+    version.regex = "^\\d+[.]\\d+([.]\\d+)?$"
+    if(!grepl(version.regex, version)) stop("Invalid version of SaTScan - versions should be formatted as '#.#' or '#.#.#'")
+    else {
+      version.components = strsplit(version, ".", fixed=TRUE)[[1]]
+      major = as.numeric(version.components[1])
+      minor = as.numeric(version.components[2])
+      
+      if (major < 9 || (major == 9 && minor < 2)) {
+        ssenv$.ss.params = ssenv$.ss.params.v9_2
+        warning("The minimum defined parameters version of SaTScan is 9.2")
+      }
+      else if (major == 9 && minor == 2) ssenv$.ss.params = ssenv$.ss.params.v9_2
+      else if (major == 9 && minor == 3) ssenv$.ss.params = ssenv$.ss.params.v9_3
+      else if (major == 9 && minor == 4) ssenv$.ss.params = ssenv$.ss.params.v9_4
+      else if (major == 9 && minor == 5) ssenv$.ss.params = ssenv$.ss.params.v9_5
+      else if (major == 9 && minor == 6) ssenv$.ss.params = ssenv$.ss.params.v9_6
+      else if (major == 9 && minor == 7) ssenv$.ss.params = ssenv$.ss.params.v9_7
+      else if (major == 10 && minor == 0) ssenv$.ss.params = ssenv$.ss.params.v10_0
+      else if (major == 10 && minor == 1) ssenv$.ss.params = ssenv$.ss.params.v10_1
+      else {
+        ssenv$.ss.params = ssenv$.ss.params.v10_1
+        print("The specified parameters version is not known, defaulting to version 10.1")
+      }
+    }
+  }
   if (is.null(invals)) {return(ssenv$.ss.params)}
   else {
     if (inherits(invals, "list")) invals = charlistopts(invals)

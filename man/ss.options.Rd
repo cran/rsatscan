@@ -4,7 +4,7 @@
 \alias{ss.options}
 \title{Set or reset parameters to be used by SaTScan}
 \usage{
-ss.options(invals = NULL, reset = FALSE)
+ss.options(invals = NULL, reset = FALSE, version = NULL)
 }
 \arguments{
 \item{invals}{A list with entries of the form name=value, where value should be 
@@ -15,6 +15,10 @@ do nothing.}
 
 \item{reset}{If TRUE, will restore the default parameter values described in 
 the "Details" section.}
+
+\item{version}{A string of the form "#.#" or "#.#.#" specifying a version of 
+SaTScan to take parameters from. If this parameter is NULL or not specified,
+then parameters are reset based on the latest version of SaTScan.}
 }
 \value{
 If \code{invals == NULL}, returns the current parameter set, 

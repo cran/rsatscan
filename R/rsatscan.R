@@ -18,8 +18,8 @@
 #' can be used if the \code{rgdal} package and \code{sp} packages are
 #' installed and SaTScan generated a shapefile.
 #' 
-#' Currently the package works with SaTScan >= 9.2 and has been tested on Windows 7 and 
-#' Ubuntu 14.04.1.  Please contact the author if you find success or trouble on other OSes. 
+#' Currently the package works with SaTScan >= 9.2 and has been tested on Windows 10.  
+#' Please contact the maintainer if you find success or trouble on other OSes. 
 #' 
 #' @docType package
 #' @name rsatscan
