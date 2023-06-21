@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken Kleinman" />
 
-<meta name="date" content="2023-05-22" />
+<meta name="date" content="2023-06-16" />
 
 <title>rsatscan</title>
 
@@ -340,32 +340,40 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">rsatscan</h1>
 <h4 class="author">Ken Kleinman</h4>
-<h4 class="date">2023-05-22</h4>
+<h4 class="date">2023-06-16</h4>
 
 
 
-<p>SaTScan is a powerful stand-alone software program that runs
+<p>SaTScan is a powerful stand-alone free software program that runs
 spatio-temporal scan statistics. It is carefully optimized and contains
-many tricks to reduce the computational burden of the approach, which is
-doubly computationally intensive. First, scanning itself can be costly,
-particularly in spatio-temporal settings. However, even more difficult,
-testing involves resampling (Monte Carlo hypothesis testing). While
-SaTScan is not open source, it is distributed free of charge.</p>
-<p>However, use of SaTScan can be cumbersome. There are two means of
-access: a GUI, and a batch file. The GUI allows complete control, but
-precludes automated or repeated operation. The batch file allows this,
-but may be difficult to integrate into other analyses. The
-<code>rsatscan</code> package contains a set of functions and defines a
+many tricks to reduce the computational burden, which is doubly
+intensive. The scanning itself is computer intensive, particularly in
+spatio-temporal settings, and the Monte Carlo hypothesis testing
+involves resampling and redoing the scanning for hundreds or thousands
+of random data sets.</p>
+<p>There are two ways to run SaTScan. The easiest way to choose between
+the many data, analysis, parameter and output options is to use the
+graphical user interface (GUI). The GUI allows complete control, but
+precludes automated or repeated operation of multiple analyses over
+time. While more cumbersome, the SaTScan parameter file makes it
+possible to run SaTScan in batch mode, bypassing the GUI. It is not
+trivial to integrate it with various data sets and other analyses
+though. The rsatscan package contains a set of functions and defines a
 class and methods to make it easy to work with SaTScan from R. This
-should allow easy automation and integration.</p>
-<p>The functions in the package can be grouped into three sets: SaTScan
+allows easy automation and integration with data sets and analyses.</p>
+<p>Before running rsatscan, it is recommended to first explore the
+SaTScan GUI to familiarize oneself with the various data, analysis,
+parameter options. Also, it is often a good idea to create a template
+parameter file using the GUI, and then list those parameter settings
+using the ss.options()in rsatscan.</p>
+<p>The rsatscan functions can be grouped into three sets: SaTScan
 parameter functions that set parameters for SaTScan or write them in a
 file to the OS; write functions that write R data frames to the OS in
-SaTScan-readable formats; and the <code>satscan()</code> function, which
-calls out into the OS, runs SaTScan, and returns a <code>satscan</code>
-class object. Successful use of the package requires a fairly precise
-understanding of the SaTScan parameter file, for which users are
-referred to the SaTScan manual.</p>
+SaTScan-readable formats; and the satscan() function, which calls out
+into the OS, runs SaTScan, and returns a satscan class object.
+Successful use of the package requires a fairly precise understanding of
+the SaTScan parameter file, for which users are referred to the SaTScan
+User Guide.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rsatscan&quot;</span>)</span></code></pre></div>
 <pre><code>## rsatscan only does anything useful if you have SaTScan</code></pre>
 <pre><code>## See http://www.satscan.org/ for free access</code></pre>
@@ -406,7 +414,9 @@ file:</p>
 using the ‘version’ argument:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">ss.options</span>(<span class="at">reset=</span><span class="cn">TRUE</span>, <span class="at">version=</span><span class="st">&quot;10.1&quot;</span>))</span></code></pre></div>
 <p>If a version is not specified, the parameters will be set to the
-latest version available in ‘rsatscan’.</p>
+latest version available in ‘rsatscan’. More information on ss.options
+is available in the documentation page, accessible using
+<code>?ss.options</code>.</p>
 <p>Then, one would change parameters as desired. This can be done in as
 many or few steps as you like; the previous state of the parameter set
 is retained, as in <code>par()</code> or <code>options()</code>. Here,

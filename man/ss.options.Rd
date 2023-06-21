@@ -16,9 +16,27 @@ do nothing.}
 \item{reset}{If TRUE, will restore the default parameter values described in 
 the "Details" section.}
 
-\item{version}{A string of the form "#.#" or "#.#.#" specifying a version of 
-SaTScan to take parameters from. If this parameter is NULL or not specified,
-then parameters are reset based on the latest version of SaTScan.}
+\item{version}{A string of the form "#.#" or "#.#.#" specifying a SaTScan 
+parameter set. If this parameter is NULL or not specified, then parameters 
+are reset based on the latest version of SaTScan.
+
+This parameter defines which parameter set the script uses, 
+not necessarily the version of SaTScan being used to execute the analyses. 
+SaTScan is backwards compatible with older versions of parameter sets. 
+For instance you might create a script that uses the 10.1 parameter set. 
+That parameter set in the script will continue to work as you upgrade your SaTScan 
+executable to newer versions. This is the same way that rsatscan worked up to version 1.0.3 
+where the script was locked to the 9.2 parameter set but you still could use SaTScan 9.3, 
+9.4, 9.7, 10.1, etc without access to the newer parameter set options introduced in
+those versions. As such, users with scripts created with rsatscan prior to version 1.0.4 
+must explicitly set the parameter set version in their scripts.
+
+The parameter sets are stored in the 'ssenv' environment object.
+
+WARNING: Clearing your R environment will delete the 'ssenv' object and cause an error
+when attempting to use any SaTScan parameter sets. The 'rsatscan' library must
+be reloaded to restore the 'ssenv' object and allow SaTScan parameters to work
+correctly.}
 }
 \value{
 If \code{invals == NULL}, returns the current parameter set, 
@@ -46,6 +64,10 @@ head(ss.options(),3)
 # reset; shows whole parameter file without invisible()
 invisible(ss.options(reset=TRUE))
 head(ss.options(),3)
+
+# Explicitly specifying a parameter set
+invisible(ss.options(reset=TRUE, version="9.2"))
+head(ss.options(), 3)
 }
 
 }

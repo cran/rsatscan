@@ -54,3 +54,13 @@ Version 1.0.4 (5-19-2023)
 * write.ntk() to write network file for SaTScan
 * This version tested on:
 **  Windows 10 with SaTScan 10.1, R 4.3.0
+
+Version 1.0.5 (6-14-2023)
+-----------------------------------------------------------
+
+* ss.options() now alerts user if a specified parameter is not available on the user's current parameter set but is available on a later parameter set.
+* ss.options() help page updated with more detail on how to specify parameter sets and a warning about deleting the 'ssenv' variable.
+* Fixed an issue that caused the default parameter set to not be used if the user did not explicitly call ss.options(). The parameter set now defaults to 10.1 when the package is loaded.
+* The deprecated options 'Nonparametric' and 'TemporalNonparametric' for the 'time trend adjustment type' parameter have been removed from all parameter sets.
+* This version tested on:
+**  Windows 10 with SaTScan 10.1, R 4.3.0

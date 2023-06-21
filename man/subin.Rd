@@ -20,8 +20,13 @@ Replaces existing values found in one object with new values
 }
 \details{
 For each line of x, the function: 1) finds the "name" and the "value"
-2) checks to see whether the "name" exists in ssparams; if not, prints a warning
-but if so, replaces the existing line of ssparams with that line of x.
+2) checks to see whether the "name" exists in ssparams.
+If the "name" exists in .ss.params, then the existing line is replaced
+with that line of x
+If the "name" does not exist in .ss.params, then later parameter sets
+are check to see if the "name" exists in them. If the "name" exists
+in a later parameter set, this is printed as a note to the user. If 
+the "name" is not found in any parameter set, then a warning is given.
 
 Not expected to be used directly.
 }
