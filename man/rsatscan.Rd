@@ -3,6 +3,7 @@
 \docType{package}
 \name{rsatscan}
 \alias{rsatscan}
+\alias{rsatscan-package}
 \title{R functions, a class, and methods for working with SaTScan stand-alone software.}
 \description{
 rsatscan provides a suite of functions that allows you to easily write SaTScan parameter
@@ -26,4 +27,25 @@ installed and SaTScan generated a shapefile.
 
 Currently the package works with SaTScan >= 9.2 and has been tested on Windows 10.  
 Please contact the maintainer if you find success or trouble on other OSes.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://www.satscan.org}
+}
+
+}
+\author{
+\strong{Maintainer}: Scott Hostovich \email{HostovichS@imsweb.com}
+
+Authors:
+\itemize{
+  \item Ken Kleinman \email{ken.kleinman@gmail.com}
+}
+
+Other contributors:
+\itemize{
+  \item Amer Moosa \email{MoosaA@imsweb.com} [contributor]
+}
+
 }

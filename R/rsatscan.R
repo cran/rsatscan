@@ -23,4 +23,4 @@
 #' 
 #' @docType package
 #' @name rsatscan
-NULL
+"_PACKAGE"
