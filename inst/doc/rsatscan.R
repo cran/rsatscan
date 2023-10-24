@@ -44,7 +44,7 @@ write.geo(NYCfevergeo, td, "NYCfever")
 ## summary.default(NYCfever)
 
 ## -----------------------------------------------------------------------------
-## sp::plot(NYCfever$shapeclust)
+## plot(sf::st_geometry(NYCfever$shapeclust))
 
 ## ---- fig.keep="all", fig.show="hold"-----------------------------------------
 ## hist(unlist(NYCfever$llr), main="Monte Carlo")

@@ -7,8 +7,8 @@ Description: 'SaTScan'(TM) <https://www.satscan.org> is software for finding reg
 	'rsatscan' package provides functions for writing R data frames in 
 	'SaTScan'-readable formats, for setting 'SaTScan' parameters, for running 'SaTScan' in 
 	the OS, and for reading the files that 'SaTScan' creates.  
-Version: 1.0.6
-Date: 2023-08-30
+Version: 1.0.7
+Date: 2023-10-19
 URL: https://www.satscan.org
 Authors@R: c(
 	person("Ken", "Kleinman", email= "ken.kleinman@gmail.com", role=c("aut")),
@@ -16,16 +16,16 @@ Authors@R: c(
 	person("Amer", "Moosa", email= "MoosaA@imsweb.com", role=c("ctb")))
 Depends: R (>= 3.0.2)
 Imports: utils, foreign
-Suggests: knitr, rmarkdown, rgdal (>= 0.9.1), sp (>= 1.0-9)
+Suggests: knitr, rmarkdown, sf
 VignetteBuilder: knitr
 License: GPL-3
 LazyData: true
 NeedsCompilation: no
 Repository: CRAN
 RoxygenNote: 7.2.3
-Packaged: 2023-08-30 17:58:46 UTC; moosaa
+Packaged: 2023-10-20 12:44:38 UTC; moosaa
 Author: Ken Kleinman [aut],
   Scott Hostovich [cre],
   Amer Moosa [ctb]
 Maintainer: Scott Hostovich <HostovichS@imsweb.com>
-Date/Publication: 2023-09-01 18:00:02 UTC
+Date/Publication: 2023-10-24 12:30:02 UTC

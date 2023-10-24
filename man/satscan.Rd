@@ -40,8 +40,8 @@ A satscan-class object, which is a list of 8 items, not all of which are always 
   \item{gis}{A data frame with the geographic information dataset SaTScan makes.}
   \item{llr}{A data frame with the log likelihood ratios dataset SaTScan makes.}
   \item{sci}{A data frame with the other cluster information dataset SaTScan makes.}
-  \item{shapeclust}{A list object, of class SpatialPolygonsDataFrame, defined by the \code{sp} 
-  package.  It contains the ESRI shapefile(s) SaTScan makes.  This is made only if the \code{rgdal}
+  \item{shapeclust}{A list object, of class sf, defined by the \code{sf} package.
+  It contains the ESRI shapefile(s) SaTScan makes.  This is made only if the \code{sf}
   package is available.}
   \item{prm}{A character vector containing the contents of the parameter file you told SaTScan 
   to use.}

@@ -21,8 +21,8 @@ geography, population, etc., files in the format expected by SaTScan, if you hap
 them (or make them) in R and want to write them into the OS for SaTScan to use.
 
 There are \code{summary} and \code{print} methods for \code{satscan-class} 
-objects.  There are also \code{plot} methods in the \code{sp} package, which
-can be used if the \code{rgdal} package and \code{sp} packages are
+objects.  There are also \code{plot} methods in the \code{sf} package, which
+can be used if the \code{sf} package and \code{sf} packages are
 installed and SaTScan generated a shapefile.
 
 Currently the package works with SaTScan >= 9.2 and has been tested on Windows 10.  

@@ -98,7 +98,7 @@ The `satscan` object has a slot for each possible output file that SaTScan creat
 If SaTScan generated a shapefile, `satscan()` reads it, by way of the `rgdal` function `readOGR()`, if it's available, into a class defined in the `sp` package.  You can use the plot methods defined in the `sp` package to plot it, or use one of the many packages that builds on the `sp` package for further processing.
 
 ```{r}
-## sp::plot(NYCfever$shapeclust)
+## plot(sf::st_geometry(NYCfever$shapeclust))
 ```
 
 It might be interesting to examine the scan statistics from the Monte Carlo steps.

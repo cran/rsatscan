@@ -27,8 +27,8 @@
 #'   \item{gis}{A data frame with the geographic information dataset SaTScan makes.}
 #'   \item{llr}{A data frame with the log likelihood ratios dataset SaTScan makes.}
 #'   \item{sci}{A data frame with the other cluster information dataset SaTScan makes.}
-#'   \item{shapeclust}{A list object, of class SpatialPolygonsDataFrame, defined by the \code{sp} 
-#'   package.  It contains the ESRI shapefile(s) SaTScan makes.  This is made only if the \code{rgdal}
+#'   \item{shapeclust}{A list object, of class sf, defined by the \code{sf} package.
+#'   It contains the ESRI shapefile(s) SaTScan makes.  This is made only if the \code{sf}
 #'   package is available.}
 #'   \item{prm}{A character vector containing the contents of the parameter file you told SaTScan 
 #'   to use.}
@@ -91,12 +91,12 @@ satscan = function(
       read.llr(prmloc,prmfilename) else NA
     scifile = if  (file.exists(paste0(prmloc,prmfilename,".sci.dbf")))
       read.sci(prmloc,prmfilename) else NA  
-    if (verbose) cat("\n \n Any following message is from readOGR() in the rdgal package \n")
+    if (verbose) cat("\n \n Any following message is from st_read() in the sf package \n")
       shpfile = if (file.exists(paste0(prmloc,prmfilename,".col.shp"))) {
-        if (requireNamespace("rgdal", quietly = TRUE)) {
-          rgdal::readOGR(dsn=stripslash(prmloc), layer=paste0(prmfilename,".col"),
-                    verbose=verbose) 
-                }  else cat("\n \n rgdal package not installed, so shapefile can't be imported")
+        if (requireNamespace("sf", quietly = TRUE)) {
+          sf::st_read(dsn=stripslash(prmloc), layer=paste0(prmfilename,".col"),
+                    quiet=!verbose) 
+                }  else cat("\n \n sf package not installed, so shapefile can't be imported")
           } else NA
     if (cleanup) {
         suppressWarnings(file.remove(paste0(prmloc,prmfilename,".txt")))
