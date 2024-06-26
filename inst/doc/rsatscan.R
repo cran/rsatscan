@@ -9,7 +9,7 @@ head(NYCfevergeo)
 invisible(ss.options(reset=TRUE))
 
 ## -----------------------------------------------------------------------------
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE, version="10.2"))
 
 ## -----------------------------------------------------------------------------
 ss.options(list(CaseFile="NYCfever.cas", PrecisionCaseTimes=3))
@@ -46,13 +46,13 @@ write.geo(NYCfevergeo, td, "NYCfever")
 ## -----------------------------------------------------------------------------
 ## plot(sf::st_geometry(NYCfever$shapeclust))
 
-## ---- fig.keep="all", fig.show="hold"-----------------------------------------
+## ----fig.keep="all", fig.show="hold"------------------------------------------
 ## hist(unlist(NYCfever$llr), main="Monte Carlo")
 
 # Let's draw a line for the clusters in the observed data
 ## abline(v=NYCfever$col[,c("TEST_STAT")], col = "red")
 
-## ---- echo=FALSE, include=FALSE-----------------------------------------------
+## ----echo=FALSE, include=FALSE------------------------------------------------
 #clean up!
 file.remove(paste0(td,"/NYCfever.prm"))
 file.remove(paste0(td,"/NYCfever.cas"))
@@ -64,7 +64,7 @@ write.geo(NMgeo, td,"NM")
 write.pop(NMpop, td,"NM")
 
 ## -----------------------------------------------------------------------------
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="NM.cas",StartDate="1973/1/1",EndDate="1991/12/31", 
                 PopulationFile="NM.pop",
                 CoordinatesFile="NM.geo", CoordinatesType=0, AnalysisType=3))
@@ -79,7 +79,7 @@ write.ss.prm(td,"testnm")
 ## -----------------------------------------------------------------------------
 ## head(testnm$prm,10)
 
-## ---- echo=FALSE, include=FALSE-----------------------------------------------
+## ----echo=FALSE, include=FALSE------------------------------------------------
 #clean up!
 file.remove(paste0(td,"/testnm.prm"))
 file.remove(paste0(td,"/NM.pop"))
@@ -91,7 +91,7 @@ write.cas(NHumbersidecas, td, "NHumberside")
 write.ctl(NHumbersidectl, td, "NHumberside")
 write.geo(NHumbersidegeo, td, "NHumberside")
 
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="NHumberside.cas", ControlFile="NHumberside.ctl"))
 ss.options(list(PrecisionCaseTimes=0, StartDate="2001/11/1", EndDate="2001/11/24"))
 ss.options(list(CoordinatesFile="NHumberside.geo", CoordinatesType=0, ModelType=1))
@@ -103,7 +103,7 @@ write.ss.prm(td, "NHumberside")
 
 ## summary(NHumberside)
 
-## ---- echo=FALSE, include=FALSE-----------------------------------------------
+## ----echo=FALSE, include=FALSE------------------------------------------------
 #clean up!
 file.remove(paste0(td,"/NHumberside.cas"))
 file.remove(paste0(td,"/NHumberside.ctl"))

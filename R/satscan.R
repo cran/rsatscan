@@ -50,7 +50,7 @@
 satscan = function(
   prmlocation,  prmfilename,  sslocation = "c:/progra~2/satscan",
   ssbatchfilename = "SaTScanBatch", cleanup = TRUE, verbose=FALSE) {
-
+    
     ssfile = paste0(stripslash(sslocation), "/", ssbatchfilename)
     if (Sys.which(ssfile) =="")
           stop("SaTScan is not there or is not runnable")

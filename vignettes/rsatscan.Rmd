@@ -44,7 +44,7 @@ invisible(ss.options(reset=TRUE))
 
 Parameters for a specific SaTScan version (>= 9.2) can be set using the 'version' argument:
 ```{r}
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE, version="10.2"))
 ```
 If a version is not specified, the parameters will be set to the latest version available in 'rsatscan'. More information on ss.options is available in the documentation page, accessible using `?ss.options`.
 
@@ -95,7 +95,7 @@ The `satscan` object has a slot for each possible output file that SaTScan creat
 ## summary.default(NYCfever)
 ```
 
-If SaTScan generated a shapefile, `satscan()` reads it, by way of the `rgdal` function `readOGR()`, if it's available, into a class defined in the `sp` package.  You can use the plot methods defined in the `sp` package to plot it, or use one of the many packages that builds on the `sp` package for further processing.
+If SaTScan generated a shapefile, `satscan()` reads it, by way of the `sf` function `st_read()`, if it's available, into a class defined in the `sf` package.  You can use the plot methods defined in the `sf` package to plot it, or use one of the many packages that builds on the `sf` package for further processing.
 
 ```{r}
 ## plot(sf::st_geometry(NYCfever$shapeclust))
@@ -132,7 +132,7 @@ write.pop(NMpop, td,"NM")
 
 Again, replicating the examples from the SaTScan user guide, we set up and then write the parameter file, then run SaTScan.
 ```{r}
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="NM.cas",StartDate="1973/1/1",EndDate="1991/12/31", 
                 PopulationFile="NM.pop",
                 CoordinatesFile="NM.geo", CoordinatesType=0, AnalysisType=3))
@@ -169,7 +169,7 @@ write.cas(NHumbersidecas, td, "NHumberside")
 write.ctl(NHumbersidectl, td, "NHumberside")
 write.geo(NHumbersidegeo, td, "NHumberside")
 
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="NHumberside.cas", ControlFile="NHumberside.ctl"))
 ss.options(list(PrecisionCaseTimes=0, StartDate="2001/11/1", EndDate="2001/11/24"))
 ss.options(list(CoordinatesFile="NHumberside.geo", CoordinatesType=0, ModelType=1))

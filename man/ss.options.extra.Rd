@@ -4,11 +4,14 @@
 \alias{ss.options.extra}
 \title{Add lines to the current SaTScan parameter list}
 \usage{
-ss.options.extra(invals = NULL)
+ss.options.extra(invals = NULL, section = NULL)
 }
 \arguments{
-\item{invals}{A character vector, which will be added to the end of the 
-current paramter list.}
+\item{invals}{A character vector, which will be added to the current parameter list.}
+
+\item{section}{A character vector of length 1 that specifies the section of the
+parameter file to add the new parameters to. Sections are denoted in the 'ssenv'
+object by square brackets.}
 }
 \value{
 Nothing.
@@ -23,7 +26,22 @@ Polygon),
 SaTScan allows a variable number of parameters; these 
 parameters are not used/allowed for other models or inputs.
 This function allows the user to add 
-arbitray lines to the current list of 
+arbitrary lines to the current list of 
 parameters.  In addition to the options mentioned, it could also be
 used to add comments to the parameter file.
+}
+\examples{
+\dontrun{
+# Append second data file to the Multiple Data Sets section of the parameter list
+ss.options.extra(invals=list(CaseFile2="NYCfever.cas"), section="Multiple Data Sets")
+print(ss.options()[67:70])
+
+# Can also append to the end of the parameter file by not specifying a section.
+# This is useful for adding comments.
+# Note that the input value can be specified as a character string instead of a list 
+# just like 'ss.options()'
+ss.options.extra(invals=";This is the end of the parameter list.")
+tail(ss.options(), 3)
+}
+
 }

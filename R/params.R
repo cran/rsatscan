@@ -22,6 +22,7 @@ utils::globalVariables("ssenv")
 #' 
 #' @return The modified ssparams.
 subin = function (x,ssparams) {
+  
   for (i in 1:length(x)) {
     inprm = substr(x[i],1,regexpr("=",x[i]))
     indef = substr(x[i],regexpr("=",x[i])+1, nchar(x[i]))
@@ -199,7 +200,7 @@ charlistopts = function (x) {
 #' }
 #' 
 ss.options = function (invals=NULL, reset=FALSE, version=NULL) {
-
+  
   inparms = ssenv$.ss.params
   if (reset == TRUE && is.null(version)) ssenv$.ss.params = ssenv$.ss.params.defaults
   else if (reset == TRUE) {
@@ -225,9 +226,12 @@ ss.options = function (invals=NULL, reset=FALSE, version=NULL) {
       else if (major == 9 && minor == 7) ssenv$.ss.params = ssenv$.ss.params.v9_7
       else if (major == 10 && minor == 0) ssenv$.ss.params = ssenv$.ss.params.v10_0
       else if (major == 10 && minor == 1) ssenv$.ss.params = ssenv$.ss.params.v10_1
+      else if (major == 10 && minor == 2) ssenv$.ss.params = ssenv$.ss.params.v10_2
       else {
-        ssenv$.ss.params = ssenv$.ss.params.v10_1
-        print("The specified parameters version is not known, defaulting to version 10.1")
+        ssenv$.ss.params = ssenv$.ss.params.defaults
+        default.version.line <- regmatches(ssenv$.ss.params, regexpr("Version=\\d+[.]\\d+", ssenv$.ss.params))
+        default.version.num <- strsplit(default.version.line, "=", fixed=TRUE)[[1]][2]
+        print(paste0("The specified parameters version is not known, defaulting to version ", default.version.num))
       }
     }
   }
@@ -255,21 +259,78 @@ ss.options = function (invals=NULL, reset=FALSE, version=NULL) {
 #' SaTScan allows a variable number of parameters; these 
 #' parameters are not used/allowed for other models or inputs.
 #' This function allows the user to add 
-#' arbitray lines to the current list of 
+#' arbitrary lines to the current list of 
 #' parameters.  In addition to the options mentioned, it could also be
 #' used to add comments to the parameter file.
 #' 
-#' @param invals A character vector, which will be added to the end of the 
-#' current paramter list.
+#' @param invals A character vector, which will be added to the current parameter list.
+#' @param section A character vector of length 1 that specifies the section of the
+#' parameter file to add the new parameters to. Sections are denoted in the 'ssenv'
+#' object by square brackets. 
 #' 
 #' @return Nothing.  
-ss.options.extra = function(invals=NULL) {
+#' 
+#' @export
+#' 
+#' @examples
+#' \dontrun{
+#' # Append second data file to the Multiple Data Sets section of the parameter list
+#' ss.options.extra(invals=list(CaseFile2="NYCfever.cas"), section="Multiple Data Sets")
+#' print(ss.options()[67:70])
+#' 
+#' # Can also append to the end of the parameter file by not specifying a section.
+#' # This is useful for adding comments.
+#' # Note that the input value can be specified as a character string instead of a list 
+#' # just like 'ss.options()'
+#' ss.options.extra(invals=";This is the end of the parameter list.")
+#' tail(ss.options(), 3)
+#' }
+#' 
+ss.options.extra = function(invals=NULL, section=NULL) {
+  
   if (is.null(invals)) stop("This function doesn't do anything when there is no input")
-  if (!inherits(invals, "character")) stop("Please input a character vector")
-  else {
-    ssenv$.ss.params =  c(ssenv$.ss.params, invals)
-    invisible()
+  if(!inherits(invals, "list") && !inherits(invals, "character")) stop("Please input a character vector or list for 'invals'")
+  
+  if (inherits(invals, "list")) {
+    
+    invals = charlistopts(invals)
   }
+  
+  if(is.null(section)) {
+      
+    #if no section of the parameter list is specified, simply append to the end of the parameter list
+    #this is useful for adding comments/notes
+    ssenv$.ss.params =  c(ssenv$.ss.params, invals)
+  } else {
+      
+    if(!inherits(section, "character")) {
+        
+      stop("'section' must be a character string.")
+    }
+      
+    if(length(section) > 1) {
+        
+      stop("Only one section can be specified.")
+    }
+      
+    #add brackets to section name if not present already
+    if(!(startsWith(section, "[") && endsWith(section, "]"))) {
+        
+      section = paste0("[", section, "]")
+    }
+      
+    #error if section is not in parameter list
+    if(!(tolower(section) %in% tolower(ssenv$.ss.params))) {
+        
+      stop(paste0("Section '", section, "' not found in parameter list."))
+    }
+      
+    #add parameter(s) to selected section
+    insertion.index <- match(tolower(section), tolower(ssenv$.ss.params))
+    ssenv$.ss.params = append(ssenv$.ss.params, invals, after=insertion.index)
+  }
+    
+  invisible()
 }
 # for help page: examples of [Polygon] and Multiple Data Sets
 

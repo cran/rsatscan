@@ -39,7 +39,7 @@ write.cas(mycas, location = td, file = "mycas")
 
 Now I'm ready to build the parameter file.  This is adapted pretty closely from the `NYCfever` example in the `rsatscan` vignette.
 ```{r}
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="mycas.cas", PrecisionCaseTimes=4))
 ss.options(list(StartDate="1", CoordinatesType=0, TimeAggregationUnits=4))
 ss.options(list(EndDate="30", CoordinatesFile="mygeo.geo", AnalysisType=4, ModelType=2)) 

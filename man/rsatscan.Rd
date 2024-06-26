@@ -2,8 +2,8 @@
 % Please edit documentation in R/rsatscan.R
 \docType{package}
 \name{rsatscan}
-\alias{rsatscan}
 \alias{rsatscan-package}
+\alias{rsatscan}
 \title{R functions, a class, and methods for working with SaTScan stand-alone software.}
 \description{
 rsatscan provides a suite of functions that allows you to easily write SaTScan parameter

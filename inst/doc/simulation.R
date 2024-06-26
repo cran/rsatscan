@@ -18,7 +18,7 @@ write.geo(mygeo, location = td, file = "mygeo", userownames=TRUE)
 write.cas(mycas, location = td, file = "mycas")
 
 ## -----------------------------------------------------------------------------
-invisible(ss.options(reset=TRUE, version="10.1"))
+invisible(ss.options(reset=TRUE))
 ss.options(list(CaseFile="mycas.cas", PrecisionCaseTimes=4))
 ss.options(list(StartDate="1", CoordinatesType=0, TimeAggregationUnits=4))
 ss.options(list(EndDate="30", CoordinatesFile="mygeo.geo", AnalysisType=4, ModelType=2)) 
@@ -66,7 +66,7 @@ write.ss.prm(td, "day2")
 # summary(day2)
 # cat(day2$main[20:31],fill=1)
 
-## ---- echo=FALSE, include=FALSE-----------------------------------------------
+## ----echo=FALSE, include=FALSE------------------------------------------------
 #clean up!
 file.remove(paste0(td,"/day1.prm"))
 file.remove(paste0(td,"/day2.prm"))

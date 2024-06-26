@@ -31,10 +31,14 @@ print.satscan = function(x, ...) {
 
 
 summary.satscan = function(object, ...) {
+  
   stopifnot(class(object)=="satscan")
+    
   cat(object$main[c(9:11, 15:20,22)], fill=1)
+    
   cat(paste0("There were ", dim(object$col)[1], " clusters identified."), fill=1)
   cat(paste0("There were ", sum(object$col$P_VALUE < .05), " clusters with p < .05."))
+  
   invisible(object)
 }
 
