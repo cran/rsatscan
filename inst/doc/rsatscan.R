@@ -9,7 +9,7 @@ head(NYCfevergeo)
 invisible(ss.options(reset=TRUE))
 
 ## -----------------------------------------------------------------------------
-invisible(ss.options(reset=TRUE, version="10.2"))
+invisible(ss.options(reset=TRUE, version="10.3"))
 
 ## -----------------------------------------------------------------------------
 ss.options(list(CaseFile="NYCfever.cas", PrecisionCaseTimes=3))

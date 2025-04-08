@@ -217,17 +217,9 @@ ss.options = function (invals=NULL, reset=FALSE, version=NULL) {
       if (major < 9 || (major == 9 && minor < 2)) {
         ssenv$.ss.params = ssenv$.ss.params.v9_2
         warning("The minimum defined parameters version of SaTScan is 9.2")
-      }
-      else if (major == 9 && minor == 2) ssenv$.ss.params = ssenv$.ss.params.v9_2
-      else if (major == 9 && minor == 3) ssenv$.ss.params = ssenv$.ss.params.v9_3
-      else if (major == 9 && minor == 4) ssenv$.ss.params = ssenv$.ss.params.v9_4
-      else if (major == 9 && minor == 5) ssenv$.ss.params = ssenv$.ss.params.v9_5
-      else if (major == 9 && minor == 6) ssenv$.ss.params = ssenv$.ss.params.v9_6
-      else if (major == 9 && minor == 7) ssenv$.ss.params = ssenv$.ss.params.v9_7
-      else if (major == 10 && minor == 0) ssenv$.ss.params = ssenv$.ss.params.v10_0
-      else if (major == 10 && minor == 1) ssenv$.ss.params = ssenv$.ss.params.v10_1
-      else if (major == 10 && minor == 2) ssenv$.ss.params = ssenv$.ss.params.v10_2
-      else {
+      } else if(paste0(".ss.params.v", major, "_", minor) %in% names(ssenv)) {
+        ssenv$.ss.params = ssenv[[paste0(".ss.params.v", major, "_", minor)]]
+      } else {
         ssenv$.ss.params = ssenv$.ss.params.defaults
         default.version.line <- regmatches(ssenv$.ss.params, regexpr("Version=\\d+[.]\\d+", ssenv$.ss.params))
         default.version.num <- strsplit(default.version.line, "=", fixed=TRUE)[[1]][2]

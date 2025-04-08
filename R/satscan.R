@@ -77,7 +77,7 @@ satscan = function(
     #   warning(warning.message)
     # }
     
-    system(paste(shQuote(ssfile), infile), show.output.on.console=verbose)
+    system(paste(shQuote(ssfile), shQuote(infile)), show.output.on.console=verbose)
     
     mainfile = if  (file.exists(paste0(prmloc,prmfilename,".txt")))
       read.satscanmain(prmloc,prmfilename) else NA

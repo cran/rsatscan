@@ -79,3 +79,11 @@ Version 1.0.8 (6-17-2024)
 * ss.options() now uses SaTScan 10.2 parameters as the default parameter set.
 * ss.options.extra() can now be used to append arbitrary lines to the SaTScan parameter list in the section specified by the user.
 ** Windows 10 with SaTScan 10.2, R 4.4.0
+
+Version 1.0.9 (3-28-2025)
+-----------------------------------------------------------
+
+* Parameter set for SaTScan 10.3 has been added.
+* ss.options() now uses SaTScan 10.3 parameters as the default parameter set.
+* Fixed "Program options error: too many positional options have been specified on the command line" when satscan() is called with a parameter file path that contains whitespace.
+** Windows 10 with SaTScan 10.3, R 4.4.3

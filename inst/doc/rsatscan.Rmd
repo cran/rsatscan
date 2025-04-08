@@ -44,7 +44,7 @@ invisible(ss.options(reset=TRUE))
 
 Parameters for a specific SaTScan version (>= 9.2) can be set using the 'version' argument:
 ```{r}
-invisible(ss.options(reset=TRUE, version="10.2"))
+invisible(ss.options(reset=TRUE, version="10.3"))
 ```
 If a version is not specified, the parameters will be set to the latest version available in 'rsatscan'. More information on ss.options is available in the documentation page, accessible using `?ss.options`.
 
